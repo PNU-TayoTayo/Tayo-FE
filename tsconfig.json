@@ -4,7 +4,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -20,7 +20,27 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@image/*": [
+        "./public/image/*"
+      ],
+      "@components/*": [
+        "./components/*"
+      ],
+      "@enumerate/*": [
+        "./enumerates/*"
+      ],
+      "@hooks/*": [
+        "./hooks/*"
+      ],
+      "@context/*": [
+        "./context/*"
+      ],
+      "@utils/*": [
+        "./utils/*"
+      ],
+      "@api/*": [
+        "./api/*"
+      ]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
