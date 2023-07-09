@@ -24,22 +24,22 @@
         "./public/image/*"
       ],
       "@components/*": [
-        "./components/*"
+        "./src/components/*"
       ],
       "@enumerate/*": [
-        "./enumerates/*"
+        "./src/enumerates/*"
       ],
       "@hooks/*": [
-        "./hooks/*"
+        "./src/hooks/*"
       ],
       "@context/*": [
-        "./context/*"
+        "./src/context/*"
       ],
       "@utils/*": [
-        "./utils/*"
+        "./src/utils/*"
       ],
       "@api/*": [
-        "./api/*"
+        "./src/api/*"
       ]
     }
   },

@@ -41,6 +41,7 @@ module.exports = {
       pointYellow: '#FFA710',
       lightGrey: '#dedede',
       title: '#394159',
+      white: '#ffffff',
     },
     screens: {
       'lg': {'max': '1023px'},
