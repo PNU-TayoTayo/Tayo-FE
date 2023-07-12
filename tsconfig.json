@@ -40,8 +40,15 @@
       ],
       "@api/*": [
         "./src/api/*"
+      ],
+      "@type/*": [
+        "./src/type/*"
       ]
-    }
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "./type"
+    ]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
