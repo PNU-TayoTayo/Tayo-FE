@@ -20,20 +20,20 @@ export const NavData = [
         name: '차량검색',
         img: Location,
         colorImg: LocationGreen,
-        path: '/',
+        path: '/car-search',
     },
     {
         id: 3,
         name: '차량관리',
         img: Car,
         colorImg: CarGreen,
-        path: '/',
+        path: '/car-management',
     },
     {
         id: 4,
         name: '채팅하기',
         img: Chat,
         colorImg: ChatGreen,
-        path: '/',
+        path: '/chat',
     },
 ]

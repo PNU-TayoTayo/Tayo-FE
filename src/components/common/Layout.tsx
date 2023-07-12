@@ -10,19 +10,28 @@ import {NavData} from "@enumerate/NavData";
 
 const Layout = ({children}) => {
     return (
-        <div className="w-full h-full flex bg-[#F0F0F0]">
-            <div className="w-[100vw] h-86 z-20 fixed">
+        <div className="w-full h-full flex flex-col bg-[#f7f8fe]">
+            <div className={`h-86 w-full z-20`}>
                 <Header/>
             </div>
-            <div className="flex w-[100vw] mt-86">
-                <div className="w-140 h-[calc(100%-86px)] z-10">
-                    <SideBar/>
-                </div>
-                <div className="relative">
-                    {children}
-                </div>
+            <div className="flex w-full h-[calc(100vh-86px)]">
+                <SideBar/>
+                <>{children}</>
             </div>
         </div>
+        // <div className="w-full h-full flex bg-[#F0F0F0]">
+        //     <div className="w-[100vw] h-86 z-20 fixed">
+        //         <Header/>
+        //     </div>
+        //     <div className="flex w-[100vw] mt-86">
+        //         <div className="w-140 h-[calc(100%-86px)] z-10">
+        //             <SideBar/>
+        //         </div>
+        //         <div className="relative">
+        //             {children}
+        //         </div>
+        //     </div>
+        // </div>
     );
 };
 
@@ -44,8 +53,8 @@ const SideBar = () => {
     const pathname = usePathname();
 
     return (
-        <nav className="w-140 h-[100vh] flex flex-col justify-between bg-white drop-shadow-md">
-            <div className="flex flex-col gap-16 mt-8">
+        <nav className="w-140 h-full flex flex-col justify-between items-center bg-white drop-shadow-md">
+            <div className="flex flex-col gap-16">
                 {
                     NavData.map(item => {
                         return (
@@ -59,7 +68,7 @@ const SideBar = () => {
                     })
                 }
             </div>
-            <div>
+            <div className={`flex flex-col gap-16 pb-16`}>
                 <Link href={'/'}>
                     <Image src={User} alt={'user'}/>
                 </Link>
