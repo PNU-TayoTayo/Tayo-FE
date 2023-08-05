@@ -36,55 +36,6 @@ const CarSearch = () => {
         }
     }, []);
 
-    useEffect(() => {
-        if (typeof myLocation !== 'string') {
-            // 현재 위치 추적
-            let currentPosition = [myLocation.latitude, myLocation.longitude];
-
-            // Naver Map 생성
-            mapRef.current = new naver.maps.Map('map', {
-                center: new naver.maps.LatLng(currentPosition[0], currentPosition[1]),
-                zoomControl: false,
-                scaleControl: false,
-                logoControl: false,
-                mapDataControl: false,
-            });
-            // 현재 위치 마커 생성
-            myMarkerRef.current = new naver.maps.Marker({
-                position: new naver.maps.LatLng(currentPosition[0], currentPosition[1]),
-                map: mapRef.current,
-                icon: {
-                    url: '/image/car-search/driver-icon.svg',
-                    size: new naver.maps.Size(50, 50),
-                    anchor: new naver.maps.Point(25, 50)
-                },
-            });
-            // 주변 차량 마커 생성
-            carMap.map((car,index) => {
-                carMarkerRef.current = new naver.maps.Marker({
-                    position: new naver.maps.LatLng(car.lat[index], car.lng[index]),
-                    map: mapRef.current,
-                });
-            });
-        }
-    }, [myLocation]);
-
-    // useEffect(() => {
-    //     if (typeof myLocation !== "string") {
-    //         let currentPosition = [myLocation.latitude, myLocation.longitude];
-    //
-    //         myMarkerRef.current = new naver.maps.Marker({
-    //             position: new naver.maps.LatLng(currentPosition[0], currentPosition[1]),
-    //             map: mapRef.current,
-    //             icon: {
-    //                 url: '/image/car-search/driver-icon.svg',
-    //                 size: new naver.maps.Size(100, 100),
-    //                 anchor: new naver.maps.Point(25, 16)
-    //             },
-    //         });
-    //     }
-    // }, [myLocation])
-
     return (
         <Layout>
             <div className={`flex flex-col w-full h-full`}>
