@@ -13,7 +13,7 @@ export const NavData = [
         name: '대시보드',
         img: Home,
         colorImg: HomeGreen,
-        path: '/',
+        path: '/dashboard',
     },
     {
         id: 2,
