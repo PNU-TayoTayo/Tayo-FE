@@ -72,25 +72,22 @@ const CarSearch = () => {
 
     return (
         <Layout>
-            <div className={`flex flex-col w-full h-full`}>
-
-                <div className={`flex w-full h-full`}>
-                    <div className={`relative w-[70%] h-full`}>
-                        <div id={'map'} className={`h-full`}/>
-                        <Carousel/>
-                    </div>
-                    <div className={`w-[30%] h-full p-16 bg-white`}>
-                        <div className={`flex flex-col gap-8`}>
-                            <GrayBox className={`flex items-center`}>
-                                <Datepicker/><Image src={Calendar} alt={'calendar'}/>
-                            </GrayBox>
-                            <GrayBox className={`flex`}>
-                                <input value={address} placeholder={'주소를 입력해주세요.'}
-                                       className={`outline-none w-full text-title`}
-                                       onChange={(e)=>setAddress(e.target.value)}/>
-                                <Image src={Search} alt={'search'}/>
-                            </GrayBox>
-                        </div>
+            <div className={`flex w-full h-full`}>
+                <div className={`relative w-[70%] h-[calc(100vh-86px)]`}>
+                    <div id={'map'} className={`w-full h-full`}/>
+                    <Carousel/>
+                </div>
+                <div className={`w-[30%] h-[calc(100vh-86px)] p-16 bg-white`}>
+                    <div className={`flex flex-col gap-8`}>
+                        <GrayBox className={`flex items-center`}>
+                            <Datepicker/><Image src={Calendar} alt={'calendar'}/>
+                        </GrayBox>
+                        <GrayBox className={`flex`}>
+                            <input value={address} placeholder={'주소를 입력해주세요.'}
+                                   className={`outline-none w-full text-title`}
+                                   onChange={(e)=>setAddress(e.target.value)}/>
+                            <Image src={Search} alt={'search'}/>
+                        </GrayBox>
                     </div>
                 </div>
             </div>
