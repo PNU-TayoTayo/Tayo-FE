@@ -44,10 +44,6 @@ export default function Carousel() {
             <div    //viewport
                 ref={ref}
                 className="w-full h-320 overflow-hidden"
-                // style={{
-                //     height,
-                //     overflow: hide ? 'hidden' : 'visible',
-                // }}
             >
                 <div    //slider
                     className="flex gap-16"

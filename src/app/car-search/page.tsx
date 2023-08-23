@@ -8,7 +8,8 @@ import Search from "@image/car-search/search.svg";
 import Image from "next/image";
 import Carousel from "@components/car-research/Carousel";
 import {carMap} from "../../mock/carmap";
-
+import User from "@image/dashboard/user-icon.svg";
+import Certificated from "@image/car-search/certification-icon.svg"
 
 
 const CarSearch = () => {
@@ -79,16 +80,18 @@ const CarSearch = () => {
                 </div>
                 <div className={`w-[30%] h-[calc(100vh-86px)] p-16 bg-white`}>
                     <div className={`flex flex-col gap-8`}>
-                        <GrayBox className={`flex items-center`}>
-                            <Datepicker/><Image src={Calendar} alt={'calendar'}/>
+                        <GrayBox className={`flex items-center w-full justify-between`}>
+                            <Datepicker/>
+                            <Image src={Calendar} alt={'calendar'}/>
                         </GrayBox>
-                        <GrayBox className={`flex`}>
+                        <GrayBox className={`flex items-center`}>
                             <input value={address} placeholder={'주소를 입력해주세요.'}
                                    className={`outline-none w-full text-title`}
                                    onChange={(e)=>setAddress(e.target.value)}/>
                             <Image src={Search} alt={'search'}/>
                         </GrayBox>
                     </div>
+                    <OwnerInfo/>
                 </div>
             </div>
         </Layout>
@@ -96,3 +99,20 @@ const CarSearch = () => {
 };
 
 export default CarSearch;
+
+const OwnerInfo = () => {
+    return (
+        <div className={`flex w-full p-24 gap-16 justify-between`}>
+            <Image src={User} alt={'user'} width={72} height={72}/>
+            <div className={`flex flex-col w-[80%]`}>
+                <div className={`flex w-full justify-between`}>
+                    <Image src={Certificated} alt={'certificated'}/>
+                    <div className={`text-28 font-bold`}>
+                        <p>{'따요따요'}</p> 님의 차량입니다
+                    </div>
+                </div>
+                <p className={`text-18 text-[#4B4B4B]]`}>편하게 연락주세용</p>
+            </div>
+        </div>
+    )
+}
