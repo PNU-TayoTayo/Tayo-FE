@@ -4,13 +4,15 @@ import Image from "next/image";
 
 const ChatItem = ({img, name, text, count}) => {
     return (
-        <div className={`flex w-full justify-between`}>
-            <Image src={img} alt={'profileImg'} width={42} height={42} className={`rounded-full`}/>
-            <div className={`flex flex-col`}>
-                <p className={`text-14`}>{name}</p>
-                <p className={`text-737373`}>{text}</p>
+        <div className={`flex w-full justify-between p-16`}>
+            <div className={`flex`}>
+                <Image src={img} alt={'profileImg'} width={42} height={42} className={`rounded-full mr-10`}/>
+                <div className={`flex flex-col`}>
+                    <p className={`text-16`}>{name}</p>
+                    <p className={`text-13 text-737373`}>{text}</p>
+                </div>
             </div>
-            <div className={`w-24 h-24 bg-pointRed rounded-full text-white leading-30 text-center`}>{count}</div>
+            <div className={`w-24 h-24 bg-pointRed rounded-full text-white text-center shrink-0`}>{count}</div>
         </div>
     );
 };
