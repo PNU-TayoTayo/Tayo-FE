@@ -42,6 +42,7 @@ module.exports = {
       lightGrey: '#dedede',
       title: '#394159',
       white: '#ffffff',
+      black: '#000000',
       pointRed: '#F24822'
     },
     screens: {
