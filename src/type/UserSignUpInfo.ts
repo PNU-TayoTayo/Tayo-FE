@@ -1,14 +1,14 @@
-import exp from "constants";
-
 export interface UserSignUpInfo {
     email: string,
     password: string,
-    passwordConfirm: string,
     name: string,
     nickName: string,
     phoneNumber: string,
     introduce: string,
     walletPassword: string,
+}
+export interface UserSignUpClientInfo extends UserSignUpInfo {
+    passwordConfirm: string
 }
 export interface UserLoginInfo{
     email: string,
