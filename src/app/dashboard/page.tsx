@@ -87,10 +87,10 @@ const ShareListItem = () => {
         <div className={`flex w-full p-24 gap-16 justify-between`}>
             <Image src={User} alt={'user'} width={72} height={72}/>
             <div className={`flex flex-col w-[80%]`}>
-                <p className={`flex w-full justify-between`}>
-                    <p className={`text-28`}>{'김타요 님'}</p>
-                    <p className={`text-20 font-bold text-subGreen`}>{'+73,000원'}</p>
-                </p>
+                <div className={`flex w-full justify-between`}>
+                    <span className={`text-28`}>{'김타요 님'}</span>
+                    <span className={`text-20 font-bold text-subGreen`}>{'+73,000원'}</span>
+                </div>
                 <p className={`text-20 text-[#646464]`}>
                     23.04.11 13:00~15:00
                 </p>
