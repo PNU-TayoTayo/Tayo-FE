@@ -33,7 +33,7 @@ const SignUp = () => {
         })
         console.log(response)
     }
-    const handleSubmitForm = () => {
+    const handleSignUp = () => {
         userSignUp()
             .then(() => router.push('/sign-in'))
             .catch((error) => {alert(error.message)});
@@ -42,7 +42,7 @@ const SignUp = () => {
     return (
         <div className="grid h-screen place-content-center place-items-center bg-subGreen">
             <Image src={Logo} alt={'logo'} width={48} height={48} className={`mb-8`}/>
-            <form className="w-700 flex flex-col items-center gap-y-20 bg-white bg-opacity-50 rounded-10 p-16" onSubmit={handleSubmit(handleSubmitForm)}>
+            <form className="w-700 flex flex-col items-center gap-y-20 bg-white bg-opacity-50 rounded-10 p-16" onSubmit={handleSubmit(handleSignUp)}>
                 <p className={`text-28 font-bold text-black`}>회원가입</p>
                 <div className={`border-t-1 border-lightGrey`} />
                 <div className={`flex flex-col w-530 gap-24`}>

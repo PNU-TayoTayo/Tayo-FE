@@ -1,5 +1,5 @@
 import axios from '@utils/customAxios';
-import {UserSignUpInfo} from "@type/UserSignUpInfo";
+import {UserSignInInfo, UserSignUpInfo} from "@type/UserSignUpInfo";
 export function signUp({email, password, name, phoneNumber, nickName, introduce, walletPassword}:UserSignUpInfo) {
     return axios.post('/tayo/auth/join', {params: {
         email,
@@ -11,7 +11,7 @@ export function signUp({email, password, name, phoneNumber, nickName, introduce,
         walletPassword
         }})
 }
-export function signIn({email, password}: {email: string, password: string}) {
+export function signIn({email, password}: UserSignInInfo) {
     return axios.post('/tayo/auth/login', {params: {
         email,
         password

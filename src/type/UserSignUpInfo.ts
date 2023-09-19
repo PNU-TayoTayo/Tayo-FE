@@ -10,7 +10,7 @@ export interface UserSignUpInfo {
 export interface UserSignUpClientInfo extends UserSignUpInfo {
     passwordConfirm: string
 }
-export interface UserLoginInfo{
+export interface UserSignInInfo {
     email: string,
     password: string,
 }
