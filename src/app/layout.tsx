@@ -2,6 +2,7 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import React from "react";
 import Script from "next/script";
+import RecoilRootWrapper from "@recoil/RecoilRootWrapper";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,7 +23,9 @@ export default function RootLayout({
           type={"text/javascript"}
           src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_MAP_KEY}`}
       ></Script>
-      {children}
+      <RecoilRootWrapper>
+          {children}
+      </RecoilRootWrapper>
       </body>
 
     </html>
