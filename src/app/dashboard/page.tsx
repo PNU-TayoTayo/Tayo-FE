@@ -1,18 +1,22 @@
 'use client';
-import React from 'react';
+import React, {useState} from 'react';
 import Layout from "@components/common/Layout";
 import WhiteBox from "@components/common/WhiteBox";
+import Notification from "@components/dashboard/Notification";
+import ShareListItem from "@components/dashboard/ShareListItem";
+import RentalTable from "@components/dashboard/RentalTable";
+import {Transactions} from "../../mock/transactions"
 import Image from "next/image";
 import Bell from "@image/dashboard/Bell.svg";
-import Calender from "@image/dashboard/calendar.svg";
-import Time from "@image/dashboard/time.svg";
-import User from "@image/dashboard/user-icon.svg";
-import GoChat from "@image/dashboard/chevron-right.svg";
 import LeftArrow from "@image/dashboard/circle-arrow-left.svg";
 import RightArrow from "@image/dashboard/circle-arrow-right.svg";
 import ChartIcon from "@image/dashboard/Chart_fill.svg";
 import ChartDemo from "@image/dashboard/ChartDemo.svg";
 const DashBoard = () => {
+    const [dashboardStatus, setDashboardStatus] = useState('sharing');
+    const handleClickStatus = (status:string) => {
+        setDashboardStatus(status);
+    }
     return (
         <Layout>
             <div className={`flex flex-col mx-auto my-30 gap-16`}>
@@ -30,35 +34,12 @@ const DashBoard = () => {
                     </div>
                 </WhiteBox>
                 <WhiteBox rounded={`rounded-30`} padding={`p-36`} className={`flex flex-col gap-16`}>
-                    <span className={`flex text-27 font-bold items-center gap-4`}><Image src={ChartIcon} alt={'chart'}/>공유 현황 | 대여 현황</span>
-                    <div className={`flex `}>
-                        <div className={`flex flex-col w-[60%]`}>
-                            <Image src={ChartDemo} alt={'chart-demo'} width={808} height={450}/>
-                            <div className={`flex gap-30 justify-center items-center`}>
-                                <div className={`text-center`}>
-                                    <p className={`text-30 font-bold`}>총 공유 횟수</p>
-                                    <p className={`text-50 font-bold text-subGreen`}>87회</p>
-                                </div>
-                                <div className={`flex flex-col`}>
-                                    <p className={`text-27`}><b>이로기</b>님의 차량 공유로 지금까지</p>
-                                    <p className={`text-27`}><b className={`underline underline-offset-2 decoration-4 decoration-subGreen`}>9대</b>의 불필요한 차량 낭비를 막았어요</p>
-                                    <p className={`text-27`}>연 평균 <b className={`underline underline-offset-2 decoration-4 decoration-subGreen`}>16%</b>의 수익을 만들었어요.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={`flex flex-col w-[40%] p-24 bg-[#E4E4E4] bg-opacity-40 rounded-30`}>
-                            <p className={`text-27 font-bold`}>2023년 4월</p>
-                            <div className={`w-full `}>
-                                <ShareListItem/>
-                                <div className={`border-t-1 border-[#DEDEDE]`}></div>
-                                <ShareListItem/>
-                                <div className={`border-t-1 border-[#DEDEDE]`}></div>
-                                <ShareListItem/>
-                                <div className={`border-t-1 border-[#DEDEDE]`}></div>
-                                <ShareListItem/>
-                            </div>
-                        </div>
+                    <div className={`flex text-27 font-bold items-center gap-4`}><Image src={ChartIcon} alt={'chart'}/>
+                        <span className={`cursor-pointer`} onClick={()=>{handleClickStatus('sharing')}}>공유 현황</span>
+                        |
+                        <span className={`cursor-pointer`} onClick={()=>{handleClickStatus('rental')}}>대여 현황</span>
                     </div>
+                    {dashboardStatus === 'sharing' ? <SharingStatus transactions={Transactions}/> : <RentalStatus/>}
                 </WhiteBox>
             </div>
         </Layout>
@@ -67,34 +48,43 @@ const DashBoard = () => {
 
 export default DashBoard;
 
-const Notification = ({state}) => {
+const SharingStatus = ({transactions}) => {
     return (
-        <div className={`flex flex-col justify-between w-404 h-307 p-24 rounded-30 text-white text-24 ${state==='accept'?'bg-mainGreen':state==='reject'?'bg-[#B4B4B4]':'bg-[#6B9BC7]'}`}>
-            <div className={`flex flex-col gap-8`}>
-                <p className={`flex`}><Image src={Calender} alt={'calender'} className={`mr-4`}/>2023년 7월 18일</p>
-                <p className={`flex`}><Image src={Time} alt={'time'} className={`mr-4`}/>10:00~18:00</p>
-            </div>
-            <div className={`border border-white`}></div>
-            {state === 'accept' && <div className={`flex gap-8`}><Image src={User} alt={'user'} width={72} height={72}></Image><p><b>Jeep Wrangler Rubicon</b> 대여 신청이 수락됐어요!</p></div>}
-            {state === 'reject' && <div className={`flex gap-8`}><Image src={User} alt={'user'} width={72} height={72}></Image><p><b>Jeep Wrangler Rubicon</b> 대여 신청이 거절됐어요</p></div>}
-            {state === 'apply' && <div className={`flex gap-8`}><Image src={User} alt={'user'} width={72} height={72}></Image><p><b>김타요</b>님의 대여 신청이 왔어요!</p></div>}
-            <p className={`flex cursor-pointer leading-30 justify-end hover:underline hover:duration-500`}>채팅 확인하기<Image src={GoChat} alt={'arrow'}/></p>
-        </div>
-    )
-}
-const ShareListItem = () => {
-    return (
-        <div className={`flex w-full p-24 gap-16 justify-between`}>
-            <Image src={User} alt={'user'} width={72} height={72}/>
-            <div className={`flex flex-col w-[80%]`}>
-                <div className={`flex w-full justify-between`}>
-                    <span className={`text-28`}>{'김타요 님'}</span>
-                    <span className={`text-20 font-bold text-subGreen`}>{'+73,000원'}</span>
+        <div className={`flex `}>
+            <div className={`flex flex-col w-[60%]`}>
+                <Image src={ChartDemo} alt={'chart-demo'} width={808} height={450}/>
+                <div className={`flex gap-30 justify-center items-center`}>
+                    <div className={`text-center`}>
+                        <p className={`text-30 font-bold`}>총 공유 횟수</p>
+                        <p className={`text-50 font-bold text-subGreen`}>87회</p>
+                    </div>
+                    <div className={`flex flex-col`}>
+                        <p className={`text-27`}><b>이로기</b>님의 차량 공유로 지금까지</p>
+                        <p className={`text-27`}><b className={`underline underline-offset-2 decoration-4 decoration-subGreen`}>9대</b>의 불필요한 차량 낭비를 막았어요</p>
+                        <p className={`text-27`}>연 평균 <b className={`underline underline-offset-2 decoration-4 decoration-subGreen`}>16%</b>의 수익을 만들었어요.</p>
+                    </div>
                 </div>
-                <p className={`text-20 text-[#646464]`}>
-                    23.04.11 13:00~15:00
-                </p>
+            </div>
+            <div className={`flex flex-col w-[40%] p-24 bg-[#E4E4E4] bg-opacity-40 rounded-30`}>
+                <p className={`text-27 font-bold`}>2023년 9월</p>
+                <div className={`w-full `}>
+                    <ShareListItem item={transactions[0]}/>
+                    <div className={`border-t-1 border-[#DEDEDE]`}></div>
+                    <ShareListItem item={transactions[1]}/>
+                    <div className={`border-t-1 border-[#DEDEDE]`}></div>
+                    <ShareListItem item={transactions[2]}/>
+                    <div className={`border-t-1 border-[#DEDEDE]`}></div>
+                    <ShareListItem item={transactions[3]}/>
+                </div>
             </div>
         </div>
-    )
+    );
+}
+
+const RentalStatus = () => {
+    return (
+        <div>
+            <RentalTable/>
+        </div>
+    );
 }
