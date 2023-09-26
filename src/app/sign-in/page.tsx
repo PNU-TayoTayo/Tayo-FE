@@ -9,6 +9,8 @@ import {UserSignInInfo} from "@type/UserSignUpInfo";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {signIn} from "@api/authApi";
+import {useSetRecoilState} from "recoil";
+import {isLoggedInAtom, userAtom} from "@recoil/auth";
 
 
 const SignIn = () => {
@@ -23,15 +25,16 @@ const SignIn = () => {
         formState: {isSubmitting, errors},
         clearErrors
     } = useForm<UserSignInInfo>({ mode: 'onBlur'})
+    const setUserAtom = useSetRecoilState(userAtom);
+    const setIsLoggedInAtom = useSetRecoilState(isLoggedInAtom);
 
     const userSignIn = async () => {
         const response = await signIn({
-            email: watch('email'),
-            password: watch('password')
+                email: watch('email'),
+                password: watch('password')
         })
         const { name, nickName, accessToken } = response.data;
         localStorage.setItem("accessToken", accessToken); // 로컬 스토리지에 토큰 저장
-
     }
     const handleSignIn = () => {
         if (watch('email') === '') {
