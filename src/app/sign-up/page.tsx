@@ -9,20 +9,19 @@ import TayoButton from "@components/common/TayoButton";
 import Link from "next/link";
 import {signUp} from "@api/authApi";
 import {useRouter} from "next/navigation";
+import apiCall from "@api/apiCall";
 
 const SignUp = () => {
     const router = useRouter();
     const {
         register,
-        getValues,
         handleSubmit,
         watch,
-        setError,
         formState: { isSubmitting, isValid, errors },
     } = useForm<UserSignUpClientInfo>({ mode: 'onBlur'});
 
     const userSignUp = async () => {
-        const response = await signUp({
+        const response = await apiCall(signUp({
             email: watch('email'),
             password: watch('password'),
             name: watch('name'),
@@ -30,7 +29,7 @@ const SignUp = () => {
             nickName: watch('nickName'),
             introduce: watch('introduce'),
             walletPassword: watch('walletPassword'),
-        })
+        }));
         console.log(response)
     }
     const handleSignUp = () => {
