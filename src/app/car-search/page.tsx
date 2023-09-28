@@ -83,7 +83,7 @@ const CarSearch = () => {
 
     return (
         <Layout>
-            <div className={`flex w-full h-full`}>
+            <div className={`flex w-full h-full ml-140`}>
                 <div className={`relative w-[70%] h-[calc(100vh-86px)]`}>
                     <div id={'map'} className={`w-full h-full`}/>
                     <Carousel/>

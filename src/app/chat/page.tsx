@@ -8,7 +8,7 @@ import Image from "next/image";
 const Chat = () => {
     return (
         <Layout>
-            <div className={`flex w-full h-full`}>
+            <div className={`flex w-[calc(100%-140px)] h-full ml-140`}>
                 <div className={`w-340 h-[calc(100vh-86px)] bg-white drop-shadow-md z-10`}>
                     <p className={`bg-white h-60 font-bold text-22 p-16`}>채팅 목록</p>
                     <div className={`border-t-1 border-lightGrey`} />
