@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Logo from '@image/layout/sports-car.svg'
 import Image from "next/image";
 import {useForm} from "react-hook-form";
-import {UserSignUpClientInfo} from "@type/UserSignUpInfo";
+import {UserSignUpClientInfo} from "@type/UserInfo";
 import WhiteBox from "@components/common/WhiteBox";
 import TayoButton from "@components/common/TayoButton";
 import Link from "next/link";

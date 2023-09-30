@@ -5,13 +5,13 @@ import TayoButton from "@components/common/TayoButton";
 import WhiteBox from "@components/common/WhiteBox";
 import Image from "next/image";
 import Car from '@image/layout/car-green.svg'
-import {UserSignInInfo} from "@type/UserSignUpInfo";
+import {UserSignInInfo} from "@type/UserInfo";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {signIn} from "@api/authApi";
-import {useSetRecoilState} from "recoil";
+import {useRecoilValue, useSetRecoilState} from "recoil";
 import {isLoggedInAtom, userAtom} from "@recoil/auth";
-
+import axios from '@utils/customAxios';
 
 const SignIn = () => {
     const router = useRouter();
@@ -19,13 +19,11 @@ const SignIn = () => {
         register,
         handleSubmit,
         watch,
-        reset,
         setError,
         setValue,
         formState: {isSubmitting, errors},
-        clearErrors
     } = useForm<UserSignInInfo>({ mode: 'onBlur'})
-    const setUserAtom = useSetRecoilState(userAtom);
+    const setUser = useSetRecoilState(userAtom);
     const setIsLoggedInAtom = useSetRecoilState(isLoggedInAtom);
 
     const userSignIn = async () => {
@@ -33,8 +31,16 @@ const SignIn = () => {
                 email: watch('email'),
                 password: watch('password')
         })
-        const { name, nickName, accessToken } = response.data;
-        localStorage.setItem("accessToken", accessToken); // 로컬 스토리지에 토큰 저장
+        if (response.headers.authorization) {
+            const accessToken = response.headers.authorization;
+            localStorage.setItem("accessToken", accessToken); // 로컬 스토리지에 토큰 저장
+            // axios.defaults.headers.common['Authorization'] = accessToken;
+            setUser({name: response.data.data.name, nickName: response.data.data.nickName})
+            setIsLoggedInAtom(true)
+        } else {
+            alert('가입된 계정이 없습니다.');
+            router.push('/sign-up');
+        }
     }
     const handleSignIn = () => {
         if (watch('email') === '') {

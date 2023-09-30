@@ -1,5 +1,5 @@
 'use client';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from "@components/common/Layout";
 import WhiteBox from "@components/common/WhiteBox";
 import Notification from "@components/dashboard/Notification";
@@ -12,15 +12,20 @@ import LeftArrow from "@image/dashboard/circle-arrow-left.svg";
 import RightArrow from "@image/dashboard/circle-arrow-right.svg";
 import ChartIcon from "@image/dashboard/Chart_fill.svg";
 import ChartDemo from "@image/dashboard/ChartDemo.svg";
+import {useRecoilValue} from "recoil";
+import {userAtom} from "@recoil/auth";
 const DashBoard = () => {
+    const userInfo = useRecoilValue(userAtom);
+
     const [dashboardStatus, setDashboardStatus] = useState('sharing');
     const handleClickStatus = (status:string) => {
         setDashboardStatus(status);
     }
+
     return (
         <Layout>
             <div className={`flex flex-col mx-auto my-30 gap-16`}>
-                <p className={`text-40 font-bold`}>지금 바로 공유해보세요!</p>
+                <p className={`text-40 font-bold`}>{userInfo.nickName}님, 지금 바로 공유해보세요!</p>
                 <WhiteBox rounded={`rounded-30`} padding={`p-36`} className={`flex flex-col gap-16`}>
                     <span className={`flex text-27 font-bold items-center gap-4`}><Image src={Bell} alt={'bell'}/>신청 알림<div className={`w-30 h-30 bg-title rounded-50 text-white font-light leading-30 text-center`}>3</div></span>
                     <div className={`flex gap-32`}>
@@ -39,7 +44,7 @@ const DashBoard = () => {
                         |
                         <span className={`cursor-pointer`} onClick={()=>{handleClickStatus('rental')}}>대여 현황</span>
                     </div>
-                    {dashboardStatus === 'sharing' ? <SharingStatus transactions={Transactions}/> : <RentalStatus/>}
+                    {dashboardStatus === 'sharing' ? <SharingStatus transactions={Transactions} userName={userInfo.nickName}/> : <RentalStatus/>}
                 </WhiteBox>
             </div>
         </Layout>
@@ -48,7 +53,7 @@ const DashBoard = () => {
 
 export default DashBoard;
 
-const SharingStatus = ({transactions}) => {
+const SharingStatus = ({transactions, userName}) => {
     return (
         <div className={`flex `}>
             <div className={`flex flex-col w-[60%]`}>
@@ -59,7 +64,7 @@ const SharingStatus = ({transactions}) => {
                         <p className={`text-50 font-bold text-subGreen`}>87회</p>
                     </div>
                     <div className={`flex flex-col`}>
-                        <p className={`text-27`}><b>이로기</b>님의 차량 공유로 지금까지</p>
+                        <p className={`text-27`}><b>{userName}</b>님의 차량 공유로 지금까지</p>
                         <p className={`text-27`}><b className={`underline underline-offset-2 decoration-4 decoration-subGreen`}>9대</b>의 불필요한 차량 낭비를 막았어요</p>
                         <p className={`text-27`}>연 평균 <b className={`underline underline-offset-2 decoration-4 decoration-subGreen`}>16%</b>의 수익을 만들었어요.</p>
                     </div>

@@ -21,9 +21,12 @@ import IcDistance from "@image/car-search/distance-icon.svg";
 import IcTest from "@image/car-search/test-icon.svg";
 import ImageLabel from "@components/common/ImageLabel";
 import TayoButton from "@components/common/TayoButton";
+import {useRecoilValue} from "recoil";
+import {userAtom} from "@recoil/auth";
 
 const CarSearch = () => {
-    const [address, setAddress] = useState('')
+    const userInfo = useRecoilValue(userAtom);
+    const [address, setAddress] = useState('');
     const mapRef = useRef<HTMLElement | null | any>(null);
     const myMarkerRef = useRef<any | null>(null);
     const carMarkerRef = useRef<any | null>(null);

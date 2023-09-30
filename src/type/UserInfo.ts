@@ -1,4 +1,4 @@
-export interface UserSignUpInfo {
+export interface UserInfo {
     email: string,
     password: string,
     name: string,
@@ -7,10 +7,17 @@ export interface UserSignUpInfo {
     introduce: string,
     walletPassword: string,
 }
-export interface UserSignUpClientInfo extends UserSignUpInfo {
+export interface UserSignUpClientInfo extends UserInfo {
     passwordConfirm: string
 }
 export interface UserSignInInfo {
     email: string,
     password: string,
+}
+export interface MyPageInfo {
+    email: string,
+    name: string,
+    nickName: string,
+    phoneNumber: string,
+    introduce: string,
 }
