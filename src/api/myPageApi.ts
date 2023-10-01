@@ -27,3 +27,19 @@ export function changeIntroduce({newIntroduce}: {newIntroduce: string}) {
         }
     });
 }
+export function getMyBalance() {
+    return axios.get('/tayo/my/money',{
+        headers: {
+            Authorization: localStorage.getItem('accessToken'),
+        }
+    });
+}
+export function deposit({amount}: {amount: number}) {
+    return axios.post('/tayo/my/deposit',{
+        amount,
+    },{
+        headers: {
+            Authorization: localStorage.getItem('accessToken'),
+        }
+    });
+}
