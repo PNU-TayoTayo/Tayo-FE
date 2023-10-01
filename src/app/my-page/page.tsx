@@ -1,23 +1,26 @@
 'use client'
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Layout from "@components/common/Layout";
 import WhiteBox from "@components/common/WhiteBox";
 import GrayBox from "@components/common/GrayBox";
 import Image from "next/image";
 import User from "@image/dashboard/user-icon.svg"
+import Edit from "@image/my-page/edit.svg"
 import Button from "@components/common/Button";
-import {changePassword, getMyInfo} from "@api/myPageApi";
+import {changeIntroduce, changePassword, getMyInfo} from "@api/myPageApi";
 import apiCall from "@api/apiCall";
 import {MyPageInfo, NewPassword} from "@type/UserInfo";
 import {useForm} from "react-hook-form";
 
 const MyPage = () => {
+    const [isIntroduceEditable, setIsIntroduceEditable] = useState<boolean>(true);
+    const [newIntroduce, setNewIntroduce] = useState<string>('');
     const [userData, setUserData] = useState<MyPageInfo>({
-        name: '김돈우',
-        email: 'donus@pusan.ac.kr',
-        phoneNumber: '010-1234-5678',
-        nickName: 'donus',
-        introduce: '안녕하세요 차 공유하러 왔어요~'
+        name: '',
+        email: '',
+        phoneNumber: '',
+        nickName: '',
+        introduce: ''
     })
     const walletData = {
         cost: 10000
@@ -37,17 +40,41 @@ const MyPage = () => {
             alert('내 정보 불러오기 실패');
         }
     }
-    const changeUserPassword = async () => {
+    const setIntroduce = async ({newIntroduce}) => {
+        const response = await apiCall(changeIntroduce({
+            newIntroduce: newIntroduce
+        }));
+        if (response) {
+            if (response.result){
+                setNewIntroduce(newIntroduce);
+                return;
+            }
+        } else {
+            alert('한줄 소개 수정 실패');
+        }
+    }
+    const handleChangeUserPassword = async () => {
         await apiCall(changePassword({
             currentPassword: watch('currentPassword'),
             newPassword: watch('newPassword'),
             checkNewPassword: watch('checkNewPassword')
         }))
     }
-
+    const handleClickIntroduce = async () => {
+        if (isIntroduceEditable) {
+            setIsIntroduceEditable(false);
+            await setIntroduce({newIntroduce: userData.introduce});
+        } else {
+            setIsIntroduceEditable(true);
+        }
+    }
+    const handleChangeIntroduce = async (e) => {
+        setUserData({...userData, introduce: e.target.value});
+    }
     useEffect(()=>{
         getMyPageInfo();
     },[])
+
     return (
         <Layout>
             <WhiteBox width={`w-[calc(100%-200px)]`} height={`h-full`} rounded={`rounded-30`} padding={`p-36`} className={`flex flex-col gap-16 ml-170 m-30`}>
@@ -57,7 +84,11 @@ const MyPage = () => {
                         <Image src={User} alt={'user'} height={90} width={90}/>
                         <div className={`flex flex-col justify-center`}>
                             <span className={`text-36 font-bold`}>{userData.nickName}</span>
-                            <span className={`text-21 text-[#4f4f4f]`}>{userData.introduce}</span>
+                            <div className={`flex `}>
+                                <input value={userData.introduce} disabled={isIntroduceEditable} onChange={handleChangeIntroduce}
+                                       className={`outline-none bg-[#C4E9CA] text-21 text-[#4f4f4f] ${!isIntroduceEditable&&'border-b-1'}`} />
+                                <Image src={Edit} alt={'edit'} width={25} height={25} onClick={handleClickIntroduce} className={`cursor-pointer`}/>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -132,7 +163,7 @@ const MyPage = () => {
                                         <span className={`absolute top-40 text-14 text-pointRed`}>{errors.checkNewPassword && errors.checkNewPassword.message}</span>
                                     </div>
                                 </div>
-                                <Button className={`w-203 h-49 bg-[#d9d9d9] rounded-6 text-20`} onClick={changeUserPassword}>비밀번호 변경 완료</Button>
+                                <Button className={`w-203 h-49 bg-[#d9d9d9] rounded-6 text-20`} onClick={handleChangeUserPassword}>비밀번호 변경 완료</Button>
                             </div>
                         </div>
                     </GrayBox>

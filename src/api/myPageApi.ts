@@ -18,3 +18,12 @@ export function changePassword({currentPassword, newPassword, checkNewPassword}:
         }
     });
 }
+export function changeIntroduce({newIntroduce}: {newIntroduce: string}) {
+    return axios.patch('/tayo/my/introduce', {
+        newIntroduce
+    },{
+        headers: {
+            Authorization: localStorage.getItem('accessToken'),
+        }
+    });
+}
