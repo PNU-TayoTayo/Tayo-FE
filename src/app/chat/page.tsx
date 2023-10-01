@@ -4,6 +4,7 @@ import Layout from "@components/common/Layout";
 import ChatItem from "@components/chat/ChatItem";
 import User from "@image/dashboard/user-icon.svg"
 import Image from "next/image";
+import Send from "@image/chat/send.svg";
 import apiCall from "@api/apiCall";
 import {getChatList, getPastChats} from "@api/chatApi";
 import AcceptModal from "@components/chat/AcceptModal";
@@ -84,6 +85,11 @@ const Chat = () => {
                         </div>
                     </div>
                     {/*TODO: 과거 채팅 조회*/}
+                    <div className={`absolute bottom-16 w-[calc(100%-32px)] h-204 ml-16 bg-white`}>
+                        <textarea className={`resize-none w-full h-full outline-none p-16`} placeholder={'메세지를 입력해주세요.'} />
+                        <Image src={Send} alt={'send'} width={46} height={46} className={`absolute bottom-24 right-24 cursor-pointer`}
+                               onClick={()=>{}}/>
+                    </div>
                 </div>
             </div>
         </Layout>
