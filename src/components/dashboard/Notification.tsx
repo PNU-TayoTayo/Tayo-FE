@@ -7,7 +7,7 @@ import React from "react";
 
 const Notification = ({state}) => {
     return (
-        <div className={`flex flex-col justify-between w-404 h-307 p-24 rounded-30 text-white text-24 ${state==='accept'?'bg-mainGreen':state==='reject'?'bg-[#B4B4B4]':'bg-[#6B9BC7]'}`}>
+        <div className={`flex flex-col justify-between w-[33%] h-307 p-24 rounded-30 text-white text-24 ${state==='accept'?'bg-mainGreen':state==='reject'?'bg-[#B4B4B4]':'bg-[#6B9BC7]'}`}>
             <div className={`flex flex-col gap-8`}>
                 <p className={`flex`}><Image src={Calender} alt={'calender'} className={`mr-4`}/>2023년 7월 18일</p>
                 <p className={`flex`}><Image src={Time} alt={'time'} className={`mr-4`}/>10:00~18:00</p>
