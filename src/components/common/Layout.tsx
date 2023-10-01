@@ -11,7 +11,7 @@ import {NavData} from "@enumerate/NavData";
 
 const Layout = ({children}) => {
     return (
-        <div className="w-full h-full flex flex-col bg-[#f7f8fe]">
+        <div className="w-full h-full min-h-screen flex flex-col bg-[#f7f8fe]">
             <Header/>
             <div className="flex mt-86">
                 <SideBar/>

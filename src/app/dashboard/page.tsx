@@ -24,7 +24,7 @@ const DashBoard = () => {
 
     return (
         <Layout>
-            <div className={`flex flex-col mx-auto my-30 gap-16`}>
+            <div className={`flex flex-col w-[calc(100%-140px)] ml-170 m-30 gap-16`}>
                 <p className={`text-40 font-bold`}>{userInfo.nickName}님, 지금 바로 공유해보세요!</p>
                 <WhiteBox rounded={`rounded-30`} padding={`p-36`} className={`flex flex-col gap-16`}>
                     <span className={`flex text-27 font-bold items-center gap-4`}><Image src={Bell} alt={'bell'}/>신청 알림<div className={`w-30 h-30 bg-title rounded-50 text-white font-light leading-30 text-center`}>3</div></span>

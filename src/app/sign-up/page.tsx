@@ -30,7 +30,6 @@ const SignUp = () => {
             introduce: watch('introduce'),
             walletPassword: watch('walletPassword'),
         }));
-        console.log(response)
     }
     const handleSignUp = () => {
         userSignUp()
