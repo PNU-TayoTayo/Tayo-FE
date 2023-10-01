@@ -21,3 +21,8 @@ export interface MyPageInfo {
     phoneNumber: string,
     introduce: string,
 }
+export interface NewPassword {
+    currentPassword: string;
+    newPassword: string;
+    checkNewPassword: string;
+}

@@ -6,9 +6,10 @@ import GrayBox from "@components/common/GrayBox";
 import Image from "next/image";
 import User from "@image/dashboard/user-icon.svg"
 import Button from "@components/common/Button";
-import {getMyInfo} from "@api/userInfoApi";
+import {changePassword, getMyInfo} from "@api/myPageApi";
 import apiCall from "@api/apiCall";
-import {MyPageInfo} from "@type/UserInfo";
+import {MyPageInfo, NewPassword} from "@type/UserInfo";
+import {useForm} from "react-hook-form";
 
 const MyPage = () => {
     const [userData, setUserData] = useState<MyPageInfo>({
@@ -21,6 +22,11 @@ const MyPage = () => {
     const walletData = {
         cost: 10000
     }
+    const {
+        register,
+        watch,
+        formState: { isSubmitting, isValid, errors },
+    } = useForm<NewPassword>({ mode: 'onBlur'});
     const getMyPageInfo = async () => {
         const response = await apiCall(getMyInfo());
         if (response) {
@@ -30,6 +36,13 @@ const MyPage = () => {
         } else {
             alert('내 정보 불러오기 실패');
         }
+    }
+    const changeUserPassword = async () => {
+        await apiCall(changePassword({
+            currentPassword: watch('currentPassword'),
+            newPassword: watch('newPassword'),
+            checkNewPassword: watch('checkNewPassword')
+        }))
     }
 
     useEffect(()=>{
@@ -69,17 +82,57 @@ const MyPage = () => {
                             <div className={`flex flex-col gap-20 items-end`}>
                                 <div className={`flex flex-col gap-6`}>
                                     <span className={`text-20 text-[#4f4f4f]  min-w-170 `}>현재 비밀번호</span>
-                                    <GrayBox><input className={`outline-none w-309`}/></GrayBox>
+                                    <div className={`flex flex-col`}>
+                                        <GrayBox className={`w-full`}>
+                                            <input className={`w-309 outline-none`}
+                                                   type="password"
+                                                   {...register('currentPassword')}
+                                            />
+                                        </GrayBox>
+                                    </div>
                                 </div>
                                 <div className={`flex flex-col gap-6`}>
                                     <span className={`text-20 text-[#4f4f4f]  min-w-170 `}>새 비밀번호</span>
-                                    <GrayBox><input className={`outline-none w-309`}/></GrayBox>
+                                    <div className={`flex flex-col`}>
+                                        <GrayBox className={`w-full`}>
+                                            <input className={`w-309 outline-none`}
+                                                   type="password"
+                                                   {...register('newPassword', {
+                                                       required: '비밀번호는 필수 입력 항목입니다.',
+                                                       minLength: {
+                                                           value: 8,
+                                                           message: '비밀번호는 최소 8글자 이상이어야 합니다.',
+                                                       },
+                                                       maxLength: {
+                                                           value: 20,
+                                                           message: '비밀번호는 최대 20글자까지 허용됩니다.',
+                                                       },
+                                                       pattern: {
+                                                           value: /^(?=.*\d)(?=.*[a-zA-Z]).*$/,
+                                                           message: '비밀번호는 영문과 숫자의 조합이어야 합니다.',
+                                                       },
+                                                   })}
+                                            />
+                                        </GrayBox>
+                                        <span className={`absolute top-40 text-14 text-pointRed`}>{errors.newPassword && errors.newPassword.message}</span>
+                                    </div>
                                 </div>
                                 <div className={`flex flex-col gap-6`}>
                                     <span className={`text-20 text-[#4f4f4f] min-w-170 `}>새 비밀번호 확인</span>
-                                    <GrayBox><input className={`outline-none w-309`}/></GrayBox>
+                                    <div className={`flex flex-col`}>
+                                        <GrayBox className={`w-full`}>
+                                            <input className={`w-309 outline-none`}
+                                                   type="password"
+                                                   {...register('checkNewPassword', {
+                                                       required: '비밀번호를 확인해주세요.',
+                                                       validate: (value) => value === watch('newPassword') || '비밀번호가 일치하지 않습니다.',
+                                                   })}
+                                            />
+                                        </GrayBox>
+                                        <span className={`absolute top-40 text-14 text-pointRed`}>{errors.checkNewPassword && errors.checkNewPassword.message}</span>
+                                    </div>
                                 </div>
-                                <Button className={`w-203 h-49 bg-[#d9d9d9] rounded-6 text-20`} onClick={()=>{}}>비밀번호 변경 완료</Button>
+                                <Button className={`w-203 h-49 bg-[#d9d9d9] rounded-6 text-20`} onClick={changeUserPassword}>비밀번호 변경 완료</Button>
                             </div>
                         </div>
                     </GrayBox>
