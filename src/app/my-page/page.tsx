@@ -7,15 +7,18 @@ import Image from "next/image";
 import User from "@image/dashboard/user-icon.svg"
 import Edit from "@image/my-page/edit.svg"
 import Button from "@components/common/Button";
-import {changeIntroduce, changePassword, deposit, getMyBalance, getMyInfo} from "@api/myPageApi";
+import {changeIntroduce, changePassword, deposit, getMyBalance, getMyInfo, withdrawal} from "@api/myPageApi";
 import apiCall from "@api/apiCall";
 import {MyPageInfo, NewPassword} from "@type/UserInfo";
 import {useForm} from "react-hook-form";
+import DepositModal from "@components/my-page/DepositModal";
 
 const MyPage = () => {
     const [isIntroduceEditable, setIsIntroduceEditable] = useState<boolean>(true);
     const [newIntroduce, setNewIntroduce] = useState<string>('');
-    const [depositeAmount, setDepositeAmount] = useState<number>(0);
+    const [balance, setBalance] = useState<number>(0)
+    const [depositAmount, setDepositAmount] = useState<number>(0);
+    const [isDepositModalOpen, setIsDepositModalOpen] = useState<boolean>(false);
     const [userData, setUserData] = useState<MyPageInfo>({
         name: '',
         email: '',
@@ -23,7 +26,6 @@ const MyPage = () => {
         nickName: '',
         introduce: ''
     })
-    const [balance, setBalance] = useState<number>(0)
     const {
         register,
         watch,
@@ -52,6 +54,9 @@ const MyPage = () => {
             alert('한줄 소개 수정 실패');
         }
     }
+    const withdrawalAccount = async ({currentPassword}) => {
+        await apiCall(withdrawal({currentPassword}));
+    }
     const getCurrentBalance = async () => {
         const response = await apiCall(getMyBalance());
         if (response) {
@@ -62,16 +67,7 @@ const MyPage = () => {
             alert('내 잔액 불러오기 실패');
         }
     }
-    const depositeMoney = async () => {
-        const response = await apiCall(deposit({amount: depositeAmount}));
-        if (response) {
-            if (response.result){
-                setBalance(response.data);
-            }
-        } else {
-            alert('잔액 채우기 실패');
-        }
-    }
+
     const handleChangeUserPassword = async () => {
         await apiCall(changePassword({
             currentPassword: watch('currentPassword'),
@@ -97,6 +93,7 @@ const MyPage = () => {
 
     return (
         <Layout>
+            <DepositModal open={isDepositModalOpen} onClose={() => {setIsDepositModalOpen(false)}} setBalance={setBalance}/>
             <WhiteBox width={`w-[calc(100%-200px)]`} height={`h-full`} rounded={`rounded-30`} padding={`p-36`} className={`flex flex-col gap-16 ml-170 m-30`}>
                 <div>
                     {/*TODO:상단 프로필*/}
@@ -192,7 +189,7 @@ const MyPage = () => {
                         {/*TODO: 내 지갑 관리*/}
                             <div className={`flex gap-20`}>
                                 <p className={`text-27 font-bold`}>내 지갑 관리</p>
-                                <Button className={`w-181 h-49 bg-[#d9d9d9] rounded-6 text-20`} onClick={()=>{}}>잔액 채우기</Button>
+                                <Button className={`w-181 h-49 bg-[#d9d9d9] rounded-6 text-20`} onClick={()=>{setIsDepositModalOpen(true)}}>잔액 채우기</Button>
                                 <Button className={`w-181 h-49 bg-[#d9d9d9] rounded-6 text-20`} onClick={()=>{}}>출금하기</Button>
                             </div>
                             <div className={`flex gap-48 `}>
