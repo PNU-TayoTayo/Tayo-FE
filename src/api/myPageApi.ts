@@ -27,6 +27,16 @@ export function changeIntroduce({newIntroduce}: {newIntroduce: string}) {
         }
     });
 }
+export function withdrawal({currentPassword}: {currentPassword: string}) {
+    return axios.delete('/tayo/my', {
+        data: {
+            currentPassword
+        },
+        headers: {
+            Authorization: localStorage.getItem('accessToken'),
+        }
+    });
+}
 export function getMyBalance() {
     return axios.get('/tayo/my/money',{
         headers: {

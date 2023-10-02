@@ -13,6 +13,7 @@ import {MyPageInfo, NewPassword} from "@type/UserInfo";
 import {useForm} from "react-hook-form";
 import DepositModal from "@components/my-page/DepositModal";
 import WithdrawModal from "@components/my-page/WithdrawModal";
+import DeleteAccountModal from "@components/my-page/DeleteAccountModal";
 
 const MyPage = () => {
     const [isIntroduceEditable, setIsIntroduceEditable] = useState<boolean>(true);
@@ -21,6 +22,7 @@ const MyPage = () => {
     const [depositAmount, setDepositAmount] = useState<number>(0);
     const [isDepositModalOpen, setIsDepositModalOpen] = useState<boolean>(false);
     const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState<boolean>(false);
+    const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState<boolean>(false);
     const [userData, setUserData] = useState<MyPageInfo>({
         name: '',
         email: '',
@@ -56,9 +58,7 @@ const MyPage = () => {
             alert('한줄 소개 수정 실패');
         }
     }
-    const withdrawalAccount = async ({currentPassword}) => {
-        await apiCall(withdrawal({currentPassword}));
-    }
+
     const getCurrentBalance = async () => {
         const response = await apiCall(getMyBalance());
         if (response) {
@@ -97,6 +97,7 @@ const MyPage = () => {
         <Layout>
             <DepositModal open={isDepositModalOpen} onClose={() => {setIsDepositModalOpen(false)}} setBalance={setBalance}/>
             <WithdrawModal open={isWithdrawModalOpen} onClose={() => {setIsWithdrawModalOpen(false)}} setBalance={setBalance}/>
+            <DeleteAccountModal open={isDeleteAccountModalOpen} onClose={() => {setIsDeleteAccountModalOpen(false)}}/>
             <WhiteBox width={`w-[calc(100%-200px)]`} height={`h-full`} rounded={`rounded-30`} padding={`p-36`} className={`flex flex-col gap-16 ml-170 m-30`}>
                 <div>
                     {/*TODO:상단 프로필*/}
@@ -129,7 +130,10 @@ const MyPage = () => {
                             <span className={`text-24 text-[#4f4f4f]`}>{userData.phoneNumber}</span>
                         </div>
                         <div className={`flex gap-48 `}>
-                            <label className={`text-24 font-bold min-w-108 text-[#676767]`}>비밀번호</label>
+                            <div className={`flex flex-col justify-between`}>
+                                <label className={`text-24 font-bold min-w-108 text-[#676767]`}>비밀번호</label>
+                                <button className={`bg-none underline text-[#d2d2d2] text-23`} onClick={()=>{setIsDeleteAccountModalOpen(true)}}>회원 탈퇴</button>
+                            </div>
                             <div className={`flex flex-col gap-20 items-end`}>
                                 <div className={`flex flex-col gap-6`}>
                                     <span className={`text-20 text-[#4f4f4f]  min-w-170 `}>현재 비밀번호</span>
