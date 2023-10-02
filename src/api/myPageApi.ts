@@ -43,3 +43,12 @@ export function deposit({amount}: {amount: number}) {
         }
     });
 }
+export function withdraw({amount}: {amount: number}) {
+    return axios.post('/tayo/my/withdraw',{
+        amount,
+    },{
+        headers: {
+            Authorization: localStorage.getItem('accessToken'),
+        }
+    });
+}

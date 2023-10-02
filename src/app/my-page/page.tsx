@@ -12,6 +12,7 @@ import apiCall from "@api/apiCall";
 import {MyPageInfo, NewPassword} from "@type/UserInfo";
 import {useForm} from "react-hook-form";
 import DepositModal from "@components/my-page/DepositModal";
+import WithdrawModal from "@components/my-page/WithdrawModal";
 
 const MyPage = () => {
     const [isIntroduceEditable, setIsIntroduceEditable] = useState<boolean>(true);
@@ -19,6 +20,7 @@ const MyPage = () => {
     const [balance, setBalance] = useState<number>(0)
     const [depositAmount, setDepositAmount] = useState<number>(0);
     const [isDepositModalOpen, setIsDepositModalOpen] = useState<boolean>(false);
+    const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState<boolean>(false);
     const [userData, setUserData] = useState<MyPageInfo>({
         name: '',
         email: '',
@@ -94,6 +96,7 @@ const MyPage = () => {
     return (
         <Layout>
             <DepositModal open={isDepositModalOpen} onClose={() => {setIsDepositModalOpen(false)}} setBalance={setBalance}/>
+            <WithdrawModal open={isWithdrawModalOpen} onClose={() => {setIsWithdrawModalOpen(false)}} setBalance={setBalance}/>
             <WhiteBox width={`w-[calc(100%-200px)]`} height={`h-full`} rounded={`rounded-30`} padding={`p-36`} className={`flex flex-col gap-16 ml-170 m-30`}>
                 <div>
                     {/*TODO:상단 프로필*/}
@@ -190,7 +193,7 @@ const MyPage = () => {
                             <div className={`flex gap-20`}>
                                 <p className={`text-27 font-bold`}>내 지갑 관리</p>
                                 <Button className={`w-181 h-49 bg-[#d9d9d9] rounded-6 text-20`} onClick={()=>{setIsDepositModalOpen(true)}}>잔액 채우기</Button>
-                                <Button className={`w-181 h-49 bg-[#d9d9d9] rounded-6 text-20`} onClick={()=>{}}>출금하기</Button>
+                                <Button className={`w-181 h-49 bg-[#d9d9d9] rounded-6 text-20`} onClick={()=>{setIsWithdrawModalOpen(true)}}>출금하기</Button>
                             </div>
                             <div className={`flex gap-48 `}>
                                 <label className={`text-24 font-bold min-w-160 text-[#676767]`}>잔액</label>
