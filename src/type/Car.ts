@@ -3,7 +3,7 @@ interface IssuingVC{
     walletPassword: string;
 }
 interface CarVC{
-    referent: boolean;
+    referent: string;
     name: string;
     carModel: string;
     carNumber: string;

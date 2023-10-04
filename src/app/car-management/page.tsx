@@ -26,8 +26,8 @@ const CarManagement = () => {
                 </div>
                 <div className={`flex gap-24`}>
                     <MyCarInfo/>
-                    <GrayBox className={`flex flex-col gap-30 w-458 h-full min-h-639 items-center justify-center`}>
-                        <p className={`font-bold text-36`} onClick={()=>{setIsVcListModalOpen(true)}}>+</p>
+                    <GrayBox className={`flex flex-col gap-30 w-458 h-full min-h-639 items-center justify-center cursor-pointer`} onClick={()=>{setIsVcListModalOpen(true)}}>
+                        <div className={`w-full h-full flex items-center justify-center font-bold text-36`} >+</div>
                     </GrayBox>
                 </div>
             </WhiteBox>

@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Unchecked from '@image/car-management/Check_ring_light.svg';
 import Checked from '@image/car-management/Check_fill.svg';
 import Image from "next/image";
+import apiCall from "@api/apiCall";
+import {getVCList} from "@api/carManagementApi";
+import GrayBox from "@components/common/GrayBox";
 
-const VCListModal = ({open, onClose}) => {
+const VCListModal = ({open, onClose, }) => {
     const info = [{
         referent: "2818df3f-cb8e-437c-a423-3482d49fa15f",
         name: "KimDonwoo",
@@ -23,13 +26,37 @@ const VCListModal = ({open, onClose}) => {
         inspectionRecord: "20230907",
         drivingRecord: "130",
     }]
+    const [walletPassword, setWalletPassword] = useState<string>('');
+    const [vcList, setVcList] = useState<CarVC[]>([]);
 
+    const VCList = async ({walletPassword}) => {
+        const response = await apiCall(getVCList({walletPassword}));
+        if (response) {
+            if (response.result) {
+                console.log(response.data);
+                setVcList(response.data.vc);
+            }
+        }
+    }
+    const handleWalletPassword = () => {
+        VCList({walletPassword})
+    }
     return (
         <div className={`absolute top-0 left-0 flex w-full h-full bg-black bg-opacity-50 items-center ${!open&&'hidden'} z-10`}>
             <div className={`flex flex-col bg-white w-700 h-700 justify-between rounded-8 m-auto p-36`}>
                 <p className={`font-bold text-30 text-center`}>VC 목록</p>
+                <div className={`flex gap-24`}>
+                    <label>지갑 비밀번호: </label>
+                    <GrayBox>
+                        <input className={`outline-none`} onChange={(e)=>{setWalletPassword(e.target.value)}}/>
+                    </GrayBox>
+                    <button className={`w-100 h-42 bg-mainGreen text-white text-20 font-bold rounded-4`}
+                            onClick={handleWalletPassword}>
+                        VC 확인
+                    </button>
+                </div>
                 <div className={`flex flex-col gap-24 overflow-auto scrollbar-hide my-24`}>
-                    {info.map((item, index) => {
+                    {vcList&&vcList.map((item, index) => {
                         return (
                             <div key={index} className={`flex gap-16 cursor-pointer`}>
                                 <Image src={Unchecked} alt={'check'} width={73} height={73}/>
