@@ -43,19 +43,19 @@ const VCListModal = ({open, onClose, }) => {
     }
     return (
         <div className={`absolute top-0 left-0 flex w-full h-full bg-black bg-opacity-50 items-center ${!open&&'hidden'} z-10`}>
-            <div className={`flex flex-col bg-white w-700 h-700 justify-between rounded-8 m-auto p-36`}>
-                <p className={`font-bold text-30 text-center`}>VC 목록</p>
-                <div className={`flex gap-24`}>
-                    <label>지갑 비밀번호: </label>
-                    <GrayBox>
-                        <input className={`outline-none`} onChange={(e)=>{setWalletPassword(e.target.value)}}/>
+            <div className={`relative flex flex-col bg-white w-700 h-700 rounded-8 m-auto p-36`}>
+                <p className={`font-bold text-30 text-center pb-36`}>VC 목록</p>
+                <div className={`flex justify-between`}>
+                    <label className={`text-20 font-bold leading-40`}>지갑 비밀번호: </label>
+                    <GrayBox className={`w-[60%]`}>
+                        <input type={"password"} className={`outline-none`} onChange={(e)=>{setWalletPassword(e.target.value)}}/>
                     </GrayBox>
                     <button className={`w-100 h-42 bg-mainGreen text-white text-20 font-bold rounded-4`}
                             onClick={handleWalletPassword}>
                         VC 확인
                     </button>
                 </div>
-                <div className={`flex flex-col gap-24 overflow-auto scrollbar-hide my-24`}>
+                <div className={`flex flex-col gap-24 overflow-auto scrollbar-hide mt-24 mb-80`}>
                     {vcList&&vcList.map((item, index) => {
                         return (
                             <div key={index} className={`flex gap-16 cursor-pointer`}>
@@ -65,7 +65,7 @@ const VCListModal = ({open, onClose, }) => {
                         );
                     })}
                 </div>
-                <div className={`flex justify-center gap-24`}>
+                <div className={`absolute bottom-36 left-110 flex justify-center text-center gap-24`}>
                     <button className={`w-227 h-62 bg-lightGrey text-white text-20 font-bold rounded-4`}
                             onClick={onClose}>
                         취소
@@ -84,30 +84,30 @@ export default VCListModal;
 
 const VCItem = ({info}) => {
     return (
-        <div className={`flex flex-col w-full gap-16 border border-[#2b2b2b] rounded-10 p-24`}>
+        <div className={`flex flex-col w-full gap-12 border border-[#2b2b2b] rounded-10 p-24`}>
             <div className={`flex justify-between`}>
-                <label className={`text-25`}>차종</label>
-                <p className={`text-24`}>{info.carModel}</p>
+                <label className={`text-23`}>차종</label>
+                <p className={`text-22`}>{info.carModel}</p>
             </div>
             <div className={`flex justify-between`}>
-                <label className={`text-25`}>차량번호</label>
-                <p className={`text-24`}>{info.carNumber}</p>
+                <label className={`text-23`}>차량번호</label>
+                <p className={`text-22`}>{info.carNumber}</p>
             </div>
             <div className={`flex justify-between`}>
-                <label className={`text-25`}>연료</label>
-                <p className={`text-24`}>{info.carFuel}</p>
+                <label className={`text-23`}>연료</label>
+                <p className={`text-22`}>{info.carFuel}</p>
             </div>
             <div className={`flex justify-between`}>
-                <label className={`text-25`}>출고일자</label>
-                <p className={`text-24`}>{info.carDeliveryDate}</p>
+                <label className={`text-23`}>출고일자</label>
+                <p className={`text-22`}>{info.carDeliveryDate}</p>
             </div>
             <div className={`flex justify-between`}>
-                <label className={`text-25`}>검사일자</label>
-                <p className={`text-24`}>{info.inspectionRecord}</p>
+                <label className={`text-23`}>검사일자</label>
+                <p className={`text-22`}>{info.inspectionRecord}</p>
             </div>
             <div className={`flex justify-between`}>
-                <label className={`text-25`}>주행거리</label>
-                <p className={`text-24`}>{info.drivingRecord}</p>
+                <label className={`text-23`}>주행거리</label>
+                <p className={`text-22`}>{info.drivingRecord}</p>
             </div>
         </div>
     )

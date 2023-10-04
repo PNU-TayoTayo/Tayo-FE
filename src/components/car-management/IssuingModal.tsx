@@ -29,19 +29,23 @@ const IssuingModal = ({open, onClose}) => {
         <div className={`absolute top-0 left-0 flex w-full h-full bg-black bg-opacity-50 items-center ${!open&&'hidden'} z-10`}>
             <div className={`flex flex-col bg-white w-500 h-500 justify-between rounded-8 m-auto p-36`}>
                 <p className={`font-bold text-30`}>VC 발급받기</p>
-                <div className={`flex flex-col gap-24`}>
-                    <label>차량 번호: </label>
+                <div className={`flex flex-col gap-16`}>
+                    <label className={`text-20 font-bold leading-40`}>차량 번호 </label>
                     <GrayBox>
-                        <input className={`outline-none`} value={carNumber} onChange={(e)=>{setCarNumber(e.target.value)}}/>
+                        <input className={`outline-none w-full`} value={carNumber} onChange={(e)=>{setCarNumber(e.target.value)}}/>
                     </GrayBox>
                 </div>
-                <div className={`flex flex-col gap-24`}>
-                    <label>지갑 비밀번호: </label>
+                <div className={`flex flex-col gap-16`}>
+                    <label className={`text-20 font-bold leading-40`}>지갑 비밀번호 </label>
                     <GrayBox>
-                        <input className={`outline-none`} value={walletPassword} onChange={(e)=>{setWalletPassword(e.target.value)}}/>
+                        <input className={`outline-none w-full`} value={walletPassword} onChange={(e)=>{setWalletPassword(e.target.value)}}/>
                     </GrayBox>
                 </div>
                 <div className={`flex justify-center gap-24`}>
+                    <button className={`w-227 h-62 bg-lightGrey text-white text-20 font-bold rounded-4`}
+                            onClick={onClose}>
+                        취소
+                    </button>
                     <button className={`w-227 h-62 bg-subGreen text-white text-20 font-bold rounded-4`}
                             onClick={handleIssuing}>
                         발급
