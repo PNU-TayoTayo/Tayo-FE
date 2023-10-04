@@ -50,5 +50,5 @@ module.exports = {
       'md': {'max': '767px'},
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 }
