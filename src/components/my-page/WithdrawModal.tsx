@@ -39,7 +39,7 @@ const WithdrawModal = ({open, onClose, setBalance}) => {
                     </button>
                     <button className={`w-227 h-62 bg-subGreen text-white text-20 font-bold rounded-4`}
                             onClick={handleDeposit}>
-                        입금
+                        출금
                     </button>
                 </div>
             </div>

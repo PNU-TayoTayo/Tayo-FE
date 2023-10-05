@@ -1,17 +1,32 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import WhiteBox from "@components/common/WhiteBox";
 import Layout from "@components/common/Layout";
 import MyCarInfo from "@components/car-management/MyCarInfo";
 import GrayBox from "@components/common/GrayBox";
 import VCListModal from "@components/car-management/VCListModal";
 import IssuingModal from "@components/car-management/IssuingModal";
+import apiCall from "@api/apiCall";
+import {queryOwner} from "@api/carManagementApi";
 
 const CarManagement = () => {
     const [isIssuedModalOpen, setIsIssuedModalOpen] = useState<boolean>(false);
     const [isVcListModalOpen, setIsVcListModalOpen] = useState<boolean>(false);
     const [carNumber, setCarNumber] = useState<string>('');
     const [walletPassword, setWalletPassword] = useState<string>('');
+
+    const queryOwners = async () => {
+        const response = await apiCall(queryOwner());
+        if (response) {
+            if (response.result){
+                console.log("response");
+                console.log(response);
+            }
+        } else {
+            alert('내 정보 불러오기 실패');
+        }
+    }
+
     return (
         <Layout>
             <VCListModal open={isVcListModalOpen} onClose={() => {setIsVcListModalOpen(false)}} />

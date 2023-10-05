@@ -30,3 +30,10 @@ export function registerCar({walletPassword, referentVC, location, sharingPrice,
         }}
     );
 }
+export function queryOwner() {
+    return axios.get('/tayo/car/queryowner',{
+        headers: {
+            Authorization: localStorage.getItem('accessToken'),
+        }
+    });
+}
