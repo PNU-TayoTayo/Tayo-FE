@@ -2,7 +2,7 @@ import registerDragEvent from '@utils/registerDragEvent';
 import { useState } from 'react';
 import useCarouselSize from '@hooks/useCarouselSize';
 import {carMap} from "../../mock/carmap";
-import CarCard from "@components/car-research/CarCard";
+import CarCard from "@components/car-search/CarCard";
 
 const imageList = [
     'https://blog.kakaocdn.net/dn/dpxiAT/btqUBv6Fvpn/E8xUMncq7AVuDeOim0LrMk/img.jpg',
@@ -12,7 +12,7 @@ const imageList = [
     'https://blog.kakaocdn.net/dn/bG3iVL/btqUvCZPaRL/ofIjkNWJP1mj2bOG9fie51/img.jpg',
 ];
 
-export default function Carousel() {
+export default function Carousel({carList}) {
     const [hide, setHide] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [transX, setTransX] = useState(0);
@@ -70,7 +70,7 @@ export default function Carousel() {
                     {/*        <img draggable={false} src={url} alt="img" width={width} />*/}
                     {/*    </div>*/}
                     {/*))}*/}
-                    {carMap.map((car, i) => (
+                    {carList.map((car, i) => (
                         <CarCard key={i} CarData={car}/>
                     ))}
 

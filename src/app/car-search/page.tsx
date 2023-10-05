@@ -3,8 +3,8 @@ import React, {useEffect, useRef, useState} from 'react';
 import Layout from "@components/common/Layout";
 import GrayBox from "@components/common/GrayBox";
 import Datepicker from "@components/common/Datepicker";
-import starRate from "@components/car-research/StarRate";
-import Carousel from "@components/car-research/Carousel";
+import starRate from "@components/car-search/StarRate";
+import Carousel from "@components/car-search/Carousel";
 import {carMap} from "../../mock/carmap";
 
 import Image from "next/image";
@@ -23,31 +23,68 @@ import ImageLabel from "@components/common/ImageLabel";
 import TayoButton from "@components/common/TayoButton";
 import {useRecoilValue} from "recoil";
 import {userAtom} from "@recoil/auth";
+import apiCall from "@api/apiCall";
+import {searchCarList} from "@api/carSearchApi";
 
 const CarSearch = () => {
-    const userInfo = useRecoilValue(userAtom);
-    const [address, setAddress] = useState('');
     const mapRef = useRef<HTMLElement | null | any>(null);
     const myMarkerRef = useRef<any | null>(null);
-    const carMarkerRef = useRef<any | null>(null);
+    const carMarkerRef = useRef<any[] | null[]>(null);
+
+    const carMarkerList = [];
+    const userInfo = useRecoilValue(userAtom);
+    const [address, setAddress] = useState('');
+    const [bound, setBound] = useState({leftLatitude: null, leftLongitude: null, rightLatitude: null, rightLongitude: null})
+    const [carList, setCarList] = useState<CarInfo[]>([]);
 
     const [myLocation, setMyLocation] = useState<
         { latitude: number; longitude: number } | string
     >('');
+    const getCarListMap = async ({leftLatitude, leftLongitude, rightLatitude, rightLongitude, date}: mapSearch) => {
+        const response = await apiCall(searchCarList({leftLatitude, leftLongitude, rightLatitude, rightLongitude, date}));
+        if (response){
+            if (response.result){
+                setCarList(response.data.carDetailList);
+            }
+        }
+    }
+    const mapDragEvent = () => {
+        naver.maps.Event.addListener(mapRef.current, 'dragend', () => {
+            const southWest =  mapRef.current.getBounds().getSW();
+            const northEast =  mapRef.current.getBounds().getNE();
+            setBound({leftLatitude: northEast?.lat(), leftLongitude: southWest?.lng(), rightLatitude: southWest?.lat(), rightLongitude: northEast?.lng()});
+        });
+    }
+    useEffect(()=>{
+        if(!mapRef.current) return;
+        mapDragEvent();
+    },[mapRef.current]);
+
+    useEffect(() => {
+        if (bound.leftLatitude && bound.leftLongitude && bound.rightLatitude && bound.rightLongitude){
+            getCarListMap({
+                leftLatitude: bound.leftLatitude,
+                leftLongitude: bound.leftLongitude,
+                rightLatitude: bound.rightLatitude,
+                rightLongitude: bound.rightLongitude,
+                date: '2023-07-18'
+            });
+        }
+    }, [bound]);
 
     useEffect(() => {
         // geolocation 이용 현재 위치 확인, 위치 미동의 시 기본 위치로 지정
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                setMyLocation({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                });
-            });
-        } else {
-            window.alert('현재 위치를 알 수 없어 기본 위치로 지정합니다.');
-            setMyLocation({ latitude: 37.4862618, longitude: 127.1222903 });
-        }
+        // if (navigator.geolocation) {
+        //     navigator.geolocation.getCurrentPosition((position) => {
+        //         setMyLocation({
+        //             latitude: position.coords.latitude,
+        //             longitude: position.coords.longitude,
+        //         });
+        //     });
+        // } else {
+        //     window.alert('현재 위치를 알 수 없어 기본 위치로 지정합니다.');
+            setMyLocation({ latitude: 35.23153, longitude: 129.0826 });
+        // }
     }, []);
 
     useEffect(() => {
@@ -73,23 +110,31 @@ const CarSearch = () => {
                     anchor: new naver.maps.Point(25, 50)
                 },
             });
-            // 주변 차량 마커 생성
-            carMap.map((car,index) => {
-                carMarkerRef.current = new naver.maps.Marker({
-                    position: new naver.maps.LatLng(car.lat[index], car.lng[index]),
-                    map: mapRef.current,
-                });
-            });
         }
     }, [myLocation]);
 
+    useEffect(() => {
+        // 주변 차량 마커 생성
+        carList.map((car,index) => {
+            carMarkerList.push(new naver.maps.Marker({
+                position: new naver.maps.LatLng(car.sharingLatitude, car.sharingLongitude),
+                map: mapRef.current,
+                icon: {
+                    url: '/image/car-search/car_marker.svg',
+                    size: new naver.maps.Size(50, 50),
+                    anchor: new naver.maps.Point(25, 50)
+                }
+            }));
+        });
+        carMarkerRef.current = carMarkerList;
+    }, [carList]);
 
     return (
         <Layout>
             <div className={`flex w-full h-full ml-140`}>
                 <div className={`relative w-[70%] h-[calc(100vh-86px)]`}>
                     <div id={'map'} className={`w-full h-full`}/>
-                    <Carousel/>
+                    <Carousel carList={carList}/>
                 </div>
                 <div className={`flex flex-col w-[30%] h-[calc(100vh-86px)] bg-white`}>
                     <div className={`flex flex-col p-16 gap-16`}>

@@ -18,9 +18,28 @@ interface RegisterCar{
     location:{
     sharingLocation:string,
         sharingLocationAddress: string,
-        sharingLatitude:"35.23258237080505",
-        sharingLongitude:"129.0828602625644"
+        sharingLatitude:string,
+        sharingLongitude: string
     },
     sharingPrice:string,
     timeList:string[],
 }
+
+interface CarInfo{
+    carID: number,
+    ownerID: number,
+    model: string,
+    engine: string,
+    deliveryDate: string,
+    drivingRecord: number,
+    inspectionRecord: string,
+    dateList: string[],
+    sharingLocation: string,
+    sharingLocationAddress: string,
+    sharingLatitude: number,
+    sharingLongitude: number,
+    sharingAvailable: true,
+    sharingPrice: number,
+    sharingRating: number
+}
+
