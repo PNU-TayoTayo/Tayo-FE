@@ -8,24 +8,26 @@ import VCListModal from "@components/car-management/VCListModal";
 import IssuingModal from "@components/car-management/IssuingModal";
 import apiCall from "@api/apiCall";
 import {queryOwner} from "@api/carManagementApi";
+import CarCard from "@components/car-search/CarCard";
 
 const CarManagement = () => {
     const [isIssuedModalOpen, setIsIssuedModalOpen] = useState<boolean>(false);
     const [isVcListModalOpen, setIsVcListModalOpen] = useState<boolean>(false);
-    const [carNumber, setCarNumber] = useState<string>('');
-    const [walletPassword, setWalletPassword] = useState<string>('');
-
+    const [myCarList, setMyCarList]=useState<CarInfo[]>()
     const queryOwners = async () => {
         const response = await apiCall(queryOwner());
         if (response) {
             if (response.result){
-                console.log("response");
-                console.log(response);
+                setMyCarList(response.data.carDetailList)
             }
         } else {
             alert('내 정보 불러오기 실패');
         }
     }
+
+    useEffect(() => {
+        queryOwners();
+    }, []);
 
     return (
         <Layout>
@@ -40,7 +42,9 @@ const CarManagement = () => {
                     </button>
                 </div>
                 <div className={`flex gap-24`}>
-                    <MyCarInfo/>
+                    {myCarList.map((car, i) => (
+                        <MyCarInfo key={i} carData={car}/>
+                    ))}
                     <GrayBox className={`flex flex-col gap-30 w-458 h-full min-h-639 items-center justify-center cursor-pointer`} onClick={()=>{setIsVcListModalOpen(true)}}>
                         <div className={`w-full h-full flex items-center justify-center font-bold text-36`} >+</div>
                     </GrayBox>
