@@ -34,7 +34,6 @@ const SignIn = () => {
         if (response.headers.authorization) {
             const accessToken = response.headers.authorization;
             localStorage.setItem("accessToken", accessToken); // 로컬 스토리지에 토큰 저장
-            // axios.defaults.headers.common['Authorization'] = accessToken;
             setUser({name: response.data.data.name, nickName: response.data.data.nickName})
             setIsLoggedInAtom(true)
         } else {

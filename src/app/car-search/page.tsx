@@ -5,8 +5,6 @@ import GrayBox from "@components/common/GrayBox";
 import Datepicker from "@components/common/Datepicker";
 import starRate from "@components/car-search/StarRate";
 import Carousel from "@components/car-search/Carousel";
-import {carMap} from "../../mock/carmap";
-
 import Image from "next/image";
 import Calendar from "@image/car-search/ic-calendar.svg";
 import Search from "@image/car-search/search.svg";
@@ -70,8 +68,8 @@ const CarSearch = () => {
                 date: '2023-07-18'
             });
         }
+        console.log(bound)
     }, [bound]);
-
     useEffect(() => {
         // geolocation 이용 현재 위치 확인, 위치 미동의 시 기본 위치로 지정
         // if (navigator.geolocation) {
@@ -105,7 +103,7 @@ const CarSearch = () => {
                 position: new naver.maps.LatLng(currentPosition[0], currentPosition[1]),
                 map: mapRef.current,
                 icon: {
-                    url: '/image/car-search/driver-icon.svg',
+                    url: '/image/car-search/car-icon.svg',
                     size: new naver.maps.Size(50, 50),
                     anchor: new naver.maps.Point(25, 50)
                 },
@@ -120,7 +118,7 @@ const CarSearch = () => {
                 position: new naver.maps.LatLng(car.sharingLatitude, car.sharingLongitude),
                 map: mapRef.current,
                 icon: {
-                    url: '/image/car-search/car_marker.svg',
+                    url: '/image/car-search/driver-icon.svg',
                     size: new naver.maps.Size(50, 50),
                     anchor: new naver.maps.Point(25, 50)
                 }
