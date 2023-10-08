@@ -42,7 +42,7 @@ const CarManagement = () => {
                     </button>
                 </div>
                 <div className={`flex gap-24`}>
-                    {myCarList.map((car, i) => (
+                    {myCarList&&myCarList.map((car, i) => (
                         <MyCarInfo key={i} carData={car}/>
                     ))}
                     <GrayBox className={`flex flex-col gap-30 w-458 h-full min-h-639 items-center justify-center cursor-pointer`} onClick={()=>{setIsVcListModalOpen(true)}}>
