@@ -22,7 +22,7 @@ import TayoButton from "@components/common/TayoButton";
 import {useRecoilValue} from "recoil";
 import {userAtom} from "@recoil/auth";
 import apiCall from "@api/apiCall";
-import {searchCarList} from "@api/carSearchApi";
+import {applyCar, getCarDetail, searchCarList} from "@api/carSearchApi";
 
 const CarSearch = () => {
     const mapRef = useRef<HTMLElement | null | any>(null);
@@ -34,7 +34,7 @@ const CarSearch = () => {
     const [address, setAddress] = useState('');
     const [bound, setBound] = useState({leftLatitude: null, leftLongitude: null, rightLatitude: null, rightLongitude: null})
     const [carList, setCarList] = useState<CarInfo[]>([]);
-
+    const [selectedCarId, setSelectedCarId] = useState()
     const [myLocation, setMyLocation] = useState<
         { latitude: number; longitude: number } | string
     >('');
@@ -68,7 +68,6 @@ const CarSearch = () => {
                 date: '2023-07-18'
             });
         }
-        console.log(bound)
     }, [bound]);
     useEffect(() => {
         // geolocation 이용 현재 위치 확인, 위치 미동의 시 기본 위치로 지정
@@ -132,7 +131,7 @@ const CarSearch = () => {
             <div className={`flex w-full h-full ml-140`}>
                 <div className={`relative w-[70%] h-[calc(100vh-86px)]`}>
                     <div id={'map'} className={`w-full h-full`}/>
-                    <Carousel carList={carList}/>
+                    <Carousel carList={carList} setSelectedCarId={setSelectedCarId}/>
                 </div>
                 <div className={`flex flex-col w-[30%] h-[calc(100vh-86px)] bg-white`}>
                     <div className={`flex flex-col p-16 gap-16`}>
@@ -148,9 +147,9 @@ const CarSearch = () => {
                         </GrayBox>
                     </div>
                     <div className={`border-t-1 border-lightGrey`} />
-                    <OwnerInfo/>
-                    <div className={`border-t-1 border-lightGrey`} />
-                    <CarInfo/>
+                    {/*<OwnerInfo/>*/}
+                    {/*<div className={`border-t-1 border-lightGrey`} />*/}
+                    {selectedCarId&&<CarInfo carId={selectedCarId} />}
                 </div>
             </div>
         </Layout>
@@ -159,41 +158,64 @@ const CarSearch = () => {
 
 export default CarSearch;
 
-const OwnerInfo = () => {
+const CarInfo = ({carId}) => {
+    const [selectedCarInfo, setSelectedCarInfo] = useState<CarInfo>();
+    const [ownerName, setOwnerName] = useState<string>('');
+    const getSelectedCarInfo = async () => {
+        const response = await apiCall(getCarDetail({carId}));
+        setSelectedCarInfo(response.data.carDetail)
+        setOwnerName(response.data.ownerName)
+    }
+    const applyCurrentCar = async () => {
+        if (selectedCarInfo){
+            await apiCall(applyCar({
+                carID: selectedCarInfo?.carID,
+                lenderID: '3',
+                sharingPrice: selectedCarInfo?.sharingPrice.toString(),
+                sharingDate: "2023-07-19",
+                sharingLocation: selectedCarInfo?.sharingLocation,
+                sharingStatus: '신청'
+            }));
+        }
+    }
+    const handleClickApply = () => {
+        applyCurrentCar();
+    }
+    useEffect(() => {
+        getSelectedCarInfo();
+    }, [carId]);
     return (
-        <div className={`flex w-full p-24 gap-16 justify-between`}>
-            <Image src={User} alt={'user'} width={72} height={72}/>
-            <div className={`flex flex-col w-[80%]`}>
-                <div className={`flex w-full gap-10`}>
-                    <Image src={Certificated} alt={'certificated'}/>
-                    <div className={`text-28 font-bold text-[#787878]`}>
-                        <span className={`text-title`}>{'따요따요'}</span> 님의 차량입니다
+        <div>
+            <div className={`flex w-full p-24 gap-16 justify-between`}>
+                <Image src={User} alt={'user'} width={72} height={72}/>
+                <div className={`flex flex-col w-[80%]`}>
+                    <div className={`flex w-full gap-10`}>
+                        <Image src={Certificated} alt={'certificated'}/>
+                        <div className={`text-28 font-bold text-[#787878]`}>
+                            <span className={`text-title`}>{ownerName}</span> 님의 차량입니다
+                        </div>
                     </div>
+                    <p className={`text-18 text-[#4B4B4B]]`}>편하게 연락주세용</p>
                 </div>
-                <p className={`text-18 text-[#4B4B4B]]`}>편하게 연락주세용</p>
             </div>
-        </div>
-    )
-}
-
-const CarInfo = () => {
-    return (
-        <div className={`flex flex-col w-full p-24 gap-16`}>
-            <div className={`flex justify-between`}>
-                <p className={`text-24 font-bold text-[#4B4B4B]`}>Jeep Wrangler Rubicon</p>
-                <div>{starRate(1)}</div>
+            <div className={`border-t-1 border-lightGrey`} />
+            <div className={`flex flex-col w-full p-24 gap-16`}>
+                <div className={`flex justify-between`}>
+                    <p className={`text-24 font-bold text-[#4B4B4B]`}>{selectedCarInfo?.model}</p>
+                    <div>{starRate(1)}</div>
+                </div>
+                <p className={`text-18 text-[#4B4B4B]`}>{selectedCarInfo?.sharingLocationAddress}</p>
+                <Image src={Volvo} alt={'volvo'} width={300} height={200} className={`m-auto`}/>
+                <div>
+                    <ImageLabel image={IcCost} label={'대여료'} value={selectedCarInfo?.sharingPrice.toLocaleString()}/>
+                    <ImageLabel image={IcClock} label={'공유 가능 일자'} value={selectedCarInfo?.dateList.toString()}/>
+                    <ImageLabel image={IcFuel} label={'사용 연료'} value={selectedCarInfo?.engine}/>
+                    <ImageLabel image={IcShipDate} label={'최초 등록'} value={selectedCarInfo?.deliveryDate}/>
+                    <ImageLabel image={IcDistance} label={'주행 거리'} value={selectedCarInfo?.drivingRecord.toLocaleString()}/>
+                    <ImageLabel image={IcTest} label={'검사 이력'} value={selectedCarInfo?.inspectionRecord}/>
+                </div>
+                <TayoButton onClick={handleClickApply} className={`text-24 font-bold`}>예약 신청하기</TayoButton>
             </div>
-            <p className={`text-18 text-[#4B4B4B]`}>부산광역시 남구 범일5동 두산위브 더제니스 하버시티</p>
-            <Image src={Volvo} alt={'volvo'} width={300} height={200} className={`m-auto`}/>
-            <div>
-                <ImageLabel image={IcCost} label={'대여료'} value={'45,000원 / 일'}/>
-                <ImageLabel image={IcClock} label={'공유 가능 일자'} value={'2023.06.11'}/>
-                <ImageLabel image={IcFuel} label={'사용 연료'} value={'가솔린'}/>
-                <ImageLabel image={IcShipDate} label={'최초 등록'} value={'2022.03.09'}/>
-                <ImageLabel image={IcDistance} label={'주행 거리'} value={'1,000km'}/>
-                <ImageLabel image={IcTest} label={'검사 이력'} value={'2023.04.23'}/>
-            </div>
-            <TayoButton onClick={()=>{}} className={`text-24 font-bold`}>예약 신청하기</TayoButton>
         </div>
     )
 }

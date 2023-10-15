@@ -12,7 +12,7 @@ const imageList = [
     'https://blog.kakaocdn.net/dn/bG3iVL/btqUvCZPaRL/ofIjkNWJP1mj2bOG9fie51/img.jpg',
 ];
 
-export default function Carousel({carList}) {
+export default function Carousel({carList, setSelectedCarId}) {
     const [hide, setHide] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [transX, setTransX] = useState(0);
@@ -71,7 +71,7 @@ export default function Carousel({carList}) {
                     {/*    </div>*/}
                     {/*))}*/}
                     {carList.map((car, i) => (
-                        <CarCard key={i} CarData={car}/>
+                        <CarCard key={i} CarData={car} setSelectedCarId={setSelectedCarId}/>
                     ))}
 
                 </div>
