@@ -2,9 +2,9 @@
 import React from 'react';
 import Image from "next/image";
 
-const ChatItem = ({img, name, text, count}) => {
+const ChatItem = ({img, name, text, count, onClick = null}) => {
     return (
-        <div className={`flex w-full justify-between p-16`}>
+        <div className={`flex w-full justify-between p-16 cursor-pointer`} onClick={onClick}>
             <div className={`flex`}>
                 <Image src={img} alt={'profileImg'} width={42} height={42} className={`rounded-full mr-10`}/>
                 <div className={`flex flex-col`}>

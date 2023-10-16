@@ -9,11 +9,14 @@ import apiCall from "@api/apiCall";
 import {getChatList, getPastChats} from "@api/chatApi";
 import AcceptModal from "@components/chat/AcceptModal";
 import RejectModal from "@components/chat/RejectModal";
+import MyBubble from "@components/chat/MyBubble";
 
 const Chat = () => {
     const [chatList, setChatList] = useState<ChatList[]>([]);
     const [opponentNickName, setOpponentNickName] = useState<string>('');
     const [pastChats, setPastChats] = useState<ChatMessage[]>([]);
+    const [carOwner, setCarOwner] = useState(true);
+    const [chatData, setChatData] = useState();
     const [isAcceptModalOpen, setIsAcceptModalOpen] = useState<boolean>(false);
     const [isRejectModalOpen, setIsRejectModalOpen] = useState<boolean>(false);
 
@@ -38,11 +41,19 @@ const Chat = () => {
         const response = await apiCall(getPastChats({roomId}));
         if (response) {
             if (response.result){
+                setChatData(response.data)
                 setPastChats(response.data.chatMessages);
+                setOpponentNickName(response.data.opponentNickName);
+                setCarOwner(response.data.carOwner)
+                console.log(response.data)
             }
         } else {
             alert('이전 메세지 조회 실패');
         }
+    }
+    const handleClickChatRoom = (index) => {
+        getChatMessages({roomId: index})
+
     }
 
     useEffect(()=>{
@@ -58,7 +69,7 @@ const Chat = () => {
                         chatList.map((item, index) => {
                             return (
                                 <div key={index}>
-                                    <ChatItem img={User} name={item.opponentNickName} text={item.lastMessage} count={item.unreadMessageCount}/>
+                                    <ChatItem img={User} onClick={()=>{handleClickChatRoom(index+1)}} name={item.opponentNickName} text={item.lastMessage} count={item.unreadMessageCount}/>
                                     <div className={`border-t-1 border-lightGrey`} />
                                 </div>
                             )
@@ -85,6 +96,11 @@ const Chat = () => {
                         </div>
                     </div>
                     {/*TODO: 과거 채팅 조회*/}
+                    <div className={`m-16`}>
+                        {pastChats&&pastChats.map((item, index) => {
+                            return <MyBubble key={index} text={item.content} />
+                        })}
+                    </div>
                     <div className={`absolute bottom-16 w-[calc(100%-32px)] h-204 ml-16 bg-white`}>
                         <textarea className={`resize-none w-full h-full outline-none p-16`} placeholder={'메세지를 입력해주세요.'} />
                         <Image src={Send} alt={'send'} width={46} height={46} className={`absolute bottom-24 right-24 cursor-pointer`}
