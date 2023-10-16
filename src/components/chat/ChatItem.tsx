@@ -12,7 +12,7 @@ const ChatItem = ({img, name, text, count, onClick = null}) => {
                     <p className={`text-13 text-737373`}>{text}</p>
                 </div>
             </div>
-            <div className={`w-24 h-24 bg-pointRed rounded-full text-white text-center shrink-0`}>{count}</div>
+            <div className={`w-24 h-24 bg-pointRed rounded-full text-white text-center shrink-0`}>1</div>
         </div>
     );
 };
