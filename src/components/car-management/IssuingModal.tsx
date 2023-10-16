@@ -38,7 +38,7 @@ const IssuingModal = ({open, onClose}) => {
                 <div className={`flex flex-col gap-16`}>
                     <label className={`text-20 font-bold leading-40`}>지갑 비밀번호 </label>
                     <GrayBox>
-                        <input className={`outline-none w-full`} value={walletPassword} onChange={(e)=>{setWalletPassword(e.target.value)}}/>
+                        <input className={`outline-none w-full`} type={"password"} value={walletPassword} onChange={(e)=>{setWalletPassword(e.target.value)}}/>
                     </GrayBox>
                 </div>
                 <div className={`flex justify-center gap-24`}>

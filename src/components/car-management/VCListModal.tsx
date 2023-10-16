@@ -7,25 +7,6 @@ import {getVCList, registerCar} from "@api/carManagementApi";
 import GrayBox from "@components/common/GrayBox";
 
 const VCListModal = ({open, onClose, }) => {
-    const info = [{
-        referent: "2818df3f-cb8e-437c-a423-3482d49fa15f",
-        name: "KimDonwoo",
-        carModel: "Mercedes-Benz G-Class",
-        carNumber: "00가1234",
-        carFuel: "Diesel",
-        carDeliveryDate: "20230101",
-        inspectionRecord: "20210101",
-        drivingRecord: "250",
-    },{
-        referent: "2818df3f-cb8e-437c-a423-3482d49fa15f",
-        name: "KimDonwoo",
-        carModel: "Mercedes-Benz G-Class",
-        carNumber: "01나3369",
-        carFuel: "gasoline",
-        carDeliveryDate: "20220908",
-        inspectionRecord: "20230907",
-        drivingRecord: "130",
-    }]
     const [walletPassword, setWalletPassword] = useState<string>('');
     const [isWalletPasswordEntered, setIsWalletPasswordEntered] = useState<boolean>(false); // 지갑 비밀번호 맞는지 여부
     const [vcList, setVcList] = useState<CarVC[]>([]);
@@ -142,19 +123,13 @@ const RegisterVP = ({vcData, walletPassword, handleClickCancelButton}) => {
     const [location, setLocation] = useState(''); // 위치 상태
     const [rentalFee, setRentalFee] = useState(''); // 대여료 상태
     const [availabilityDate, setAvailabilityDate] = useState(''); // 공유 가능 일자 상태
-
     const postCar = async () => {
-        const response = await apiCall(registerCar({
+        await apiCall(registerCar({
             walletPassword,
-            referentVC: vcData?.referentVC,
-            location : {
-                sharingLocation: location,
-                sharingLocationAddress: location,
-                sharingLatitude: '35.23258237080505',
-                sharingLongitude: '129.0828602625644'
-            },
+            referentVC: vcData?.referent,
+            location,
             sharingPrice: rentalFee,
-            timeList: [availabilityDate,]
+            timeList: availabilityDate
         }))
     }
     const handleLocationChange = (e) => {

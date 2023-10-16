@@ -28,7 +28,9 @@ const CarManagement = () => {
     useEffect(() => {
         queryOwners();
     }, []);
-
+    useEffect(() => {
+        queryOwners();
+    }, [isVcListModalOpen]);
     return (
         <Layout>
             <VCListModal open={isVcListModalOpen} onClose={() => {setIsVcListModalOpen(false)}} />
