@@ -10,6 +10,7 @@ import {getChatList, getPastChats} from "@api/chatApi";
 import AcceptModal from "@components/chat/AcceptModal";
 import RejectModal from "@components/chat/RejectModal";
 import MyBubble from "@components/chat/MyBubble";
+import PaymentModal from "@components/chat/PaymentModal";
 
 const Chat = () => {
     const [chatList, setChatList] = useState<ChatList[]>([]);
@@ -19,10 +20,10 @@ const Chat = () => {
     const [chatData, setChatData] = useState();
     const [isAcceptModalOpen, setIsAcceptModalOpen] = useState<boolean>(false);
     const [isRejectModalOpen, setIsRejectModalOpen] = useState<boolean>(false);
-
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = useState<boolean>(false);
     const data = {
         carName: 'Jeep Wrangler Rubicon',
-        ownerName: '따요따요',
+        ownerName: '타요타요',
         date: '2023.09.30',
         location: '두산위브 더제니스 하버시티 아파트',
         cost: '45,000',
@@ -79,21 +80,34 @@ const Chat = () => {
                 <div className={`relative`}>
                     <AcceptModal open={isAcceptModalOpen} onClose={()=>{setIsAcceptModalOpen(false)}} info={data} />
                     <RejectModal open={isRejectModalOpen} onClose={()=>{setIsRejectModalOpen(false)}} info={data} />
+                    <PaymentModal open={isPaymentModalOpen} onClose={()=>{setIsPaymentModalOpen(false)}} info={data} />
                     <div className={`flex bg-white h-60 w-[calc(100vw-480px)] justify-between drop-shadow-sm px-16`}>
                         <div className={`flex gap-16`}>
                             <Image src={User} alt={'user profile'} width={42} height={42}/>
                             <p className={`font-bold text-22 leading-60`}>{opponentNickName}</p>
                         </div>
-                        <div className={`flex gap-16 items-center`}>
+                        {carOwner&&<div className={`flex gap-16 items-center`}>
                             <button className={`w-100 h-42 bg-pointRed text-white text-20 font-bold rounded-4`}
-                                    onClick={()=>{setIsRejectModalOpen(true)}}>
+                                    onClick={() => {
+                                        setIsRejectModalOpen(true)
+                                    }}>
                                 거절
                             </button>
                             <button className={`w-100 h-42 bg-subGreen text-white text-20 font-bold rounded-4`}
-                                    onClick={()=>{setIsAcceptModalOpen(true)}}>
+                                    onClick={() => {
+                                        setIsAcceptModalOpen(true)
+                                    }}>
                                 수락
                             </button>
-                        </div>
+                        </div>}
+                        {!carOwner&&<div className={`flex gap-16 items-center`}>
+                            <button className={`w-100 h-42 bg-subGreen text-white text-20 font-bold rounded-4`}
+                                    onClick={() => {
+                                        setIsPaymentModalOpen(true)
+                                    }}>
+                                결제
+                            </button>
+                        </div>}
                     </div>
                     {/*TODO: 과거 채팅 조회*/}
                     <div className={`m-16`}>
