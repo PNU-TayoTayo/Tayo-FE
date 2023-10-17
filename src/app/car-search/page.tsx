@@ -38,6 +38,11 @@ const CarSearch = () => {
     const [myLocation, setMyLocation] = useState<
         { latitude: number; longitude: number } | string
     >('');
+    {
+        carList.map((car, index) => {
+            console.log(car.carID, car.ownerID);
+        })
+    }
     const getCarListMap = async ({leftLatitude, leftLongitude, rightLatitude, rightLongitude, date}: mapSearch) => {
         const response = await apiCall(searchCarList({leftLatitude, leftLongitude, rightLatitude, rightLongitude, date}));
         if (response){
@@ -80,7 +85,7 @@ const CarSearch = () => {
         //     });
         // } else {
         //     window.alert('현재 위치를 알 수 없어 기본 위치로 지정합니다.');
-            setMyLocation({ latitude: 35.23153, longitude: 129.0826 });
+        //     setMyLocation({ latitude: 35.23153, longitude: 129.0826 });
         // }
     }, []);
 
@@ -170,7 +175,7 @@ const CarInfo = ({carId}) => {
         if (selectedCarInfo){
             await apiCall(applyCar({
                 carID: selectedCarInfo?.carID,
-                lenderID: '3',
+                lenderID: selectedCarInfo.ownerID,
                 sharingPrice: selectedCarInfo?.sharingPrice.toString(),
                 sharingDate: "2023-07-19",
                 sharingLocation: selectedCarInfo?.sharingLocation,
