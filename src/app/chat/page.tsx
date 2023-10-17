@@ -11,6 +11,7 @@ import AcceptModal from "@components/chat/AcceptModal";
 import RejectModal from "@components/chat/RejectModal";
 import MyBubble from "@components/chat/MyBubble";
 import PaymentModal from "@components/chat/PaymentModal";
+import YourBubble from "@components/chat/YourBubble";
 
 const Chat = () => {
     const [chatList, setChatList] = useState<ChatList[]>([]);
@@ -54,7 +55,9 @@ const Chat = () => {
     }
     const handleClickChatRoom = (index) => {
         getChatMessages({roomId: index})
-
+        console.log(index)
+        console.log(chatData)
+        console.log(carOwner)
     }
 
     useEffect(()=>{
@@ -110,9 +113,14 @@ const Chat = () => {
                         </div>}
                     </div>
                     {/*TODO: 과거 채팅 조회*/}
-                    <div className={`m-16`}>
+                    <div className={`relative m-16`}>
                         {pastChats&&pastChats.map((item, index) => {
-                            return <MyBubble key={index} text={item.content} />
+                            if (carOwner===item.sentByCarOwner){
+                                return <MyBubble key={index} text={item.content} />
+                            } else {
+                                return <YourBubble key={index} text={item.content} />
+                            }
+
                         })}
                     </div>
                     <div className={`absolute bottom-16 w-[calc(100%-32px)] h-204 ml-16 bg-white`}>
