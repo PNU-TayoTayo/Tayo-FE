@@ -1,5 +1,5 @@
 'use client'
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import Layout from "@components/common/Layout";
 import GrayBox from "@components/common/GrayBox";
 import Datepicker from "@components/common/Datepicker";
@@ -23,6 +23,7 @@ import {useRecoilValue} from "recoil";
 import {userAtom} from "@recoil/auth";
 import apiCall from "@api/apiCall";
 import {applyCar, getCarDetail, searchCarList} from "@api/carSearchApi";
+import {MapContext} from "@context/NaverMapContext";
 
 const CarSearch = () => {
     const mapRef = useRef<HTMLElement | null | any>(null);
@@ -31,6 +32,7 @@ const CarSearch = () => {
 
     const carMarkerList = [];
     const userInfo = useRecoilValue(userAtom);
+    const isInitMap = useContext(MapContext);
     const [address, setAddress] = useState('');
     const [bound, setBound] = useState({leftLatitude: null, leftLongitude: null, rightLatitude: null, rightLongitude: null})
     const [carList, setCarList] = useState<CarInfo[]>([]);
@@ -51,6 +53,10 @@ const CarSearch = () => {
             }
         }
     }
+    const initMap = (options) => {
+        if(mapRef.current) {return}
+        mapRef.current = new naver.maps.Map("map", options);
+    }
     const mapDragEvent = () => {
         naver.maps.Event.addListener(mapRef.current, 'dragend', () => {
             const southWest =  mapRef.current.getBounds().getSW();
@@ -58,6 +64,19 @@ const CarSearch = () => {
             setBound({leftLatitude: northEast?.lat(), leftLongitude: southWest?.lng(), rightLatitude: southWest?.lat(), rightLongitude: northEast?.lng()});
         });
     }
+    //지도 띄우기
+    useEffect(() => {
+        if(isInitMap) {
+            const mapOptions = {
+                center: new naver.maps.LatLng(35.23153, 129.0826),
+                zoomControl: false,
+                scaleControl: false,
+                logoControl: false,
+                mapDataControl: false,
+            }
+            initMap(mapOptions);
+        }
+    }, [isInitMap]);
     useEffect(()=>{
         if(!mapRef.current) return;
         mapDragEvent();
@@ -85,7 +104,7 @@ const CarSearch = () => {
         //     });
         // } else {
         //     window.alert('현재 위치를 알 수 없어 기본 위치로 지정합니다.');
-        //     setMyLocation({ latitude: 35.23153, longitude: 129.0826 });
+            setMyLocation({ latitude: 35.23153, longitude: 129.0826 });
         // }
     }, []);
 
@@ -95,13 +114,20 @@ const CarSearch = () => {
             let currentPosition = [myLocation.latitude, myLocation.longitude];
 
             // Naver Map 생성
-            mapRef.current = new naver.maps.Map('map', {
+            // mapRef.current = new naver.maps.Map('map', {
+            //     center: new naver.maps.LatLng(currentPosition[0], currentPosition[1]),
+            //     zoomControl: false,
+            //     scaleControl: false,
+            //     logoControl: false,
+            //     mapDataControl: false,
+            // });
+            initMap({
                 center: new naver.maps.LatLng(currentPosition[0], currentPosition[1]),
                 zoomControl: false,
                 scaleControl: false,
                 logoControl: false,
                 mapDataControl: false,
-            });
+            })
             // 현재 위치 마커 생성
             myMarkerRef.current = new naver.maps.Marker({
                 position: new naver.maps.LatLng(currentPosition[0], currentPosition[1]),
@@ -175,7 +201,7 @@ const CarInfo = ({carId}) => {
         if (selectedCarInfo){
             await apiCall(applyCar({
                 carID: selectedCarInfo?.carID,
-                lenderID: selectedCarInfo.ownerID,
+                lenderID: '2',
                 sharingPrice: selectedCarInfo?.sharingPrice.toString(),
                 sharingDate: "2023-07-19",
                 sharingLocation: selectedCarInfo?.sharingLocation,
