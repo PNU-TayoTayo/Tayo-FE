@@ -34,8 +34,9 @@ const SignIn = () => {
         if (response.headers.authorization) {
             const accessToken = response.headers.authorization;
             localStorage.setItem("accessToken", accessToken); // 로컬 스토리지에 토큰 저장
-            setUser({name: response.data.data.name, nickName: response.data.data.nickName})
+            setUser({name: response.data.data.name, nickName: response.data.data.nickName, id: response.data.data.id})
             setIsLoggedInAtom(true)
+            console.log(response.data)
         } else {
             alert('가입된 계정이 없습니다.');
             router.push('/sign-up');
