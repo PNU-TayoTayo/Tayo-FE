@@ -201,7 +201,7 @@ const CarInfo = ({carId}) => {
         if (selectedCarInfo){
             await apiCall(applyCar({
                 carID: selectedCarInfo?.carID,
-                lenderID: '2',
+                lenderID: selectedCarInfo?.ownerID,
                 sharingPrice: selectedCarInfo?.sharingPrice.toString(),
                 sharingDate: "2023-07-19",
                 sharingLocation: selectedCarInfo?.sharingLocation,

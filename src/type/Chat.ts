@@ -1,4 +1,5 @@
 interface ChatList{
+    chatRoomId: number,
     opponentNickName: string;
     lastMessage: string;
     unreadMessageCount: number;

@@ -69,16 +69,18 @@ const Chat = () => {
                 <div className={`w-340 h-[calc(100vh-86px)] bg-white drop-shadow-md z-10`}>
                     <p className={`bg-white h-60 font-bold text-22 p-16`}>채팅 목록</p>
                     <div className={`border-t-1 border-lightGrey`} />
-                    {
-                        chatList.map((item, index) => {
-                            return (
-                                <div key={index}>
-                                    <ChatItem img={User} onClick={()=>{handleClickChatRoom(index+1)}} name={item.opponentNickName} text={item.lastMessage} count={item.unreadMessageCount}/>
-                                    <div className={`border-t-1 border-lightGrey`} />
-                                </div>
-                            )
-                        })
-                    }
+                    <div className={`w-340 h-[calc(100vh-160px)] flex flex-col overflow-auto scrollbar-hide`}>
+                        {
+                            chatList.map((item, index) => {
+                                return (
+                                    <div key={index}>
+                                        <ChatItem img={User} onClick={()=>{handleClickChatRoom(item.chatRoomId)}} name={item.opponentNickName} text={item.lastMessage} count={item.unreadMessageCount}/>
+                                        <div className={`border-t-1 border-lightGrey`} />
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
                 </div>
                 <div className={`relative`}>
                     <AcceptModal open={isAcceptModalOpen} onClose={()=>{setIsAcceptModalOpen(false)}} info={data} />
