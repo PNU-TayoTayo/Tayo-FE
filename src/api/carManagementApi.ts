@@ -17,15 +17,28 @@ export function getVCList({walletPassword}: {walletPassword: string}) {
         }}
     );
 }
-export function registerCar({walletPassword, referentVC, location, sharingPrice, timeList}: RegisterCar) {
-    return axios.post('/tayo/car/create',{
+export function registerCar({walletPassword, referentVC, location, sharingPrice, timeList}) {
+    const locationForm = {
+        sharingLocation: location,
+        sharingLocationAddress: location,
+        sharingLatitude: '35.23258237080505',
+        sharingLongitude: '129.0828602625644'
+    }
+    const data = {
         walletPassword,
         referentVC,
-        location,
+        location: locationForm,
         sharingPrice,
-        timeList
-        },{
+        timeList: [timeList],
+    }
+    const form = new FormData();
+    const blob = new Blob([JSON.stringify(data)], {
+        type: 'application/json',
+    });
+    form.append('request', blob)
+    return axios.post('/tayo/car/create',form,{
         headers: {
+            'Content-Type': 'multipart/form-data', // Content-Type 설정
             Authorization: localStorage.getItem('accessToken'),
         }}
     );
