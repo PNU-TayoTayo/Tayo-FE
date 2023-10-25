@@ -80,7 +80,8 @@ const VCListModal = ({open, onClose, }) => {
                         </button>
                     </div>
                 </div>}
-                {currentStep===2&&<RegisterVP vcData={myVcData} walletPassword={walletPassword} handleClickCancelButton={handleClickCancelButton}/>}
+                {currentStep===2&&<RegisterVP vcData={myVcData} walletPassword={walletPassword} handleClickCancelButton={handleClickCancelButton} setCurrentStep={setCurrentStep}/>}
+                {currentStep===3&&<Final handleClickCancelButton={handleClickCancelButton}/>}
             </div>
         </div>
     );
@@ -119,7 +120,7 @@ const VCItem = ({info}) => {
     )
 }
 
-const RegisterVP = ({vcData, walletPassword, handleClickCancelButton}) => {
+const RegisterVP = ({vcData, walletPassword, handleClickCancelButton, setCurrentStep}) => {
     const [location, setLocation] = useState(''); // 위치 상태
     const [rentalFee, setRentalFee] = useState(''); // 대여료 상태
     const [availabilityDate, setAvailabilityDate] = useState(''); // 공유 가능 일자 상태
@@ -148,7 +149,7 @@ const RegisterVP = ({vcData, walletPassword, handleClickCancelButton}) => {
         e.preventDefault();
     };
     const handleClickRegister = ()  => {
-        postCar()//.then(()=>{handleClickCancelButton()})
+        postCar().then(()=>{setCurrentStep(3)})
     }
 
     return (
@@ -219,3 +220,17 @@ const RegisterVP = ({vcData, walletPassword, handleClickCancelButton}) => {
         </form>
     );
 };
+
+const Final = ({handleClickCancelButton}) => {
+    return(
+        <div className={`flex m-auto`}>
+            <div className={`flex m-auto font-bold text-30 text-center pb-36`}>차량이 성공적으로 등록되었습니다.</div>
+            <div className={`absolute bottom-36 left-199 ml-50 flex justify-center items-center text-center gap-24`}>
+                <button className={`w-227 h-62 bg-lightGrey text-white text-20 font-bold rounded-4`}
+                        onClick={handleClickCancelButton}>
+                    확인
+                </button>
+            </div>
+        </div>
+    );
+}

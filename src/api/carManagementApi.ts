@@ -29,7 +29,7 @@ export function registerCar({walletPassword, referentVC, location, sharingPrice,
         referentVC,
         location: locationForm,
         sharingPrice,
-        timeList: [timeList],
+        dataList: [timeList],
     }
     const form = new FormData();
     const blob = new Blob([JSON.stringify(data)], {

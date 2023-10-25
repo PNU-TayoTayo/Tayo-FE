@@ -11,7 +11,6 @@ const IssuingModal = ({open, onClose}) => {
         const response = await apiCall(issueVC({carNumber, walletPassword}));
         if (response) {
             if (response.result) {
-                console.log(response.data);
                 return response.data
             }
         } else {
